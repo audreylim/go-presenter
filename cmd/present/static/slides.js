@@ -210,6 +210,8 @@ function prevSlide() {
     curSlide--;
 
     updateSlides();
+
+    localStorage.setItem("slideNum", curSlide);
   }
 };
 
@@ -219,6 +221,8 @@ function nextSlide() {
     curSlide++;
 
     updateSlides();
+
+    localStorage.setItem("slideNum", curSlide);
   }
 };
 
@@ -502,6 +506,17 @@ function initialize() {
     handleDomLoaded();
   } else {
     document.addEventListener('DOMContentLoaded', handleDomLoaded, false);
+  }
+
+  window.addEventListener('storage', storageEventHandler, false);
+}
+
+function storageEventHandler(evt) {
+  var slideNum = localStorage.getItem("slideNum");
+  if (slideNum > curSlide) {
+    nextSlide();
+  } else if (slideNum < curSlide) {
+    prevSlide();
   }
 }
 

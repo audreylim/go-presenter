@@ -7,6 +7,15 @@
     <title>{{.Title}}</title>
     <meta charset='utf-8'>
     <script src='/static/slides.js'></script>
+
+    {{if .PresenterMode}}
+    <script>
+      var sections = {{.Sections}};
+      var iframeUrl = window.location.href;
+    </script>
+    <script src='/static/presenter.js'></script>
+    {{end}}
+
     <script>
       // Initialize Google Analytics tracking code on production site only.
       if (window["location"] && window["location"]["hostname"] == "talks.golang.org") {
@@ -85,6 +94,7 @@
         }
       })();
     </script>
+
   </body>
 </html>
 {{end}}
