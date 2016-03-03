@@ -35,9 +35,10 @@ func Template() *template.Template {
 func (d *Doc) Render(w io.Writer, t *template.Template) error {
 	data := struct {
 		*Doc
-		Template    *template.Template
-		PlayEnabled bool
-	}{d, t, PlayEnabled}
+		Template      *template.Template
+		PlayEnabled   bool
+		PresenterMode bool
+	}{d, t, PlayEnabled, PresenterMode}
 	return t.ExecuteTemplate(w, "root", data)
 }
 
@@ -45,9 +46,10 @@ func (d *Doc) Render(w io.Writer, t *template.Template) error {
 func (s *Section) Render(w io.Writer, t *template.Template) error {
 	data := struct {
 		*Section
-		Template    *template.Template
-		PlayEnabled bool
-	}{s, t, PlayEnabled}
+		Template      *template.Template
+		PlayEnabled   bool
+		PresenterMode bool
+	}{s, t, PlayEnabled, PresenterMode}
 	return t.ExecuteTemplate(w, "section", data)
 }
 
@@ -97,6 +99,7 @@ type Section struct {
 	Number []int
 	Title  string
 	Elem   []Elem
+	Notes  []string
 }
 
 func (s Section) Sections() (sections []Section) {
@@ -172,6 +175,12 @@ func (t Text) TemplateName() string { return "text" }
 type List struct {
 	Bullet []string
 }
+
+type Notes struct {
+	Text []string
+}
+
+func (n Notes) TemplateName() string { return "notes" }
 
 func (l List) TemplateName() string { return "list" }
 
@@ -307,6 +316,7 @@ func parseSections(ctx *Context, name string, lines *Lines, number []int, doc *D
 		text, ok = lines.nextNonEmpty()
 		for ok && !lesserHeading(text, prefix) {
 			var e Elem
+			var nt string
 			r, _ := utf8.DecodeRuneInString(text)
 			switch {
 			case unicode.IsSpace(r):
@@ -338,6 +348,8 @@ func parseSections(ctx *Context, name string, lines *Lines, number []int, doc *D
 				}
 				lines.back()
 				e = List{Bullet: b}
+			case strings.HasPrefix(text, "& "):
+				nt = text[2:]
 			case strings.HasPrefix(text, prefix+"* "):
 				lines.back()
 				subsecs, err := parseSections(ctx, name, lines, section.Number, doc)
@@ -378,6 +390,10 @@ func parseSections(ctx *Context, name string, lines *Lines, number []int, doc *D
 			if e != nil {
 				section.Elem = append(section.Elem, e)
 			}
+			if nt != "" {
+				section.Notes = append(section.Notes, nt)
+			}
+
 			text, ok = lines.nextNonEmpty()
 		}
 		if isHeading.MatchString(text) {

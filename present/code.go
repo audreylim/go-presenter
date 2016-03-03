@@ -17,6 +17,7 @@ import (
 
 // Is the playground available?
 var PlayEnabled = false
+var PresenterMode = false
 
 // TOOD(adg): replace the PlayEnabled flag with something less spaghetti-like.
 // Instead this will probably be determined by a template execution Context

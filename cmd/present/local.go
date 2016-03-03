@@ -31,6 +31,7 @@ var (
 
 func main() {
 	flag.BoolVar(&present.PlayEnabled, "play", true, "enable playground (permit execution of arbitrary user code)")
+	flag.BoolVar(&present.PresenterMode, "p", false, "enable presenter mode")
 	flag.Parse()
 
 	if *basePath == "" {
