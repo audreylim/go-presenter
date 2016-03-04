@@ -514,6 +514,7 @@ function initialize() {
 
   if (presenterMode) {
     window.addEventListener('storage', storageEventHandler, false);
+    localStorage.setItem("destSlide", curSlide);
   }
 }
 

@@ -21,9 +21,10 @@ function handleBodyKeyPress(event) {
 function configurePresenter() {
   w.document.write('<head><title>' + title + '</title></head>');
 
-  w.document.write("<iframe style='display:block;margin-top:-242px;transform:scale(0.4, 0.4);margin-left:-460px;' scrolling='no' width=1500 height=768 src='" + iframeUrl + "'></iframe>");
+  w.document.write("<iframe id='p-iframe' style='display:block;margin-top:-242px;transform:scale(0.4, 0.4);margin-left:-460px;' scrolling='no' width=1500 height=768 src='" + iframeUrl + "'></iframe>");
 
-  var curSlide = location.hash.substr(1);
+  curSlide = parseInt(localStorage.getItem("destSlide"));
+
   var notes = '';
   if (curSlide != 1) {
     var s = sections[curSlide - 2];
@@ -33,6 +34,8 @@ function configurePresenter() {
   w.document.write("<div id='notes' style='margin-top:-210px;font-family:arial'>" + notes + "</div>");
 
   w.addEventListener('storage', storageEventHandler, false);
+
+  w.document.getElementById('p-iframe').focus();
 
   w.document.close();
 };
