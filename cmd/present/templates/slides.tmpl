@@ -6,11 +6,16 @@
   <head>
     <title>{{.Title}}</title>
     <meta charset='utf-8'>
+
+    <script>
+      var presenterMode = {{.PresenterMode}};
+    </script>
     <script src='/static/slides.js'></script>
 
     {{if .PresenterMode}}
     <script>
       var sections = {{.Sections}};
+      var title = {{.Title}};
       var iframeUrl = window.location.href;
     </script>
     <script src='/static/presenter.js'></script>
