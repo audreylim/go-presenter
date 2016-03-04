@@ -1,26 +1,40 @@
+var w = null;
+
 if (window.parent == window) {
-  window.onload = function() {
-    var w = window.open('', '', 'width=600,height=640,scrollbars=yes');
+  document.addEventListener('keydown', handleBodyKeyPress, false);
+};
 
-    w.document.write('<head><title>' + title + '</title></head>');
+function handleBodyKeyPress(event) {
+  // 'P' opens presenter window
+  if (event.keyCode == 80) {
 
-    w.document.write("<iframe style='display:block;margin-top:-242px;transform:scale(0.4, 0.4);margin-left:-460px;' scrolling='no' width=1500 height=768 src='" + iframeUrl + "'></iframe>");
-
-    var curSlide = location.hash.substr(1);
-    var notes = '';
-    if (curSlide != 1) {
-      var s = sections[curSlide - 2];
-      notes = formatNotes(s.Notes);
+    if (w) {
+      w.close();
+      w = null;
+    } else {
+      w = window.open('', '', 'width=600,height=640,scrollbars=yes');
+      configurePresenter();
     }
-
-    w.document.write("<div id='notes' style='margin-top:-210px;font-family:arial'>" + notes + "</div>");
-
-    w.addEventListener('storage', storageEventHandler, false);
-    w.obj = w;
-
-    w.document.close();
-    return false;
   }
+};
+
+function configurePresenter() {
+  w.document.write('<head><title>' + title + '</title></head>');
+
+  w.document.write("<iframe style='display:block;margin-top:-242px;transform:scale(0.4, 0.4);margin-left:-460px;' scrolling='no' width=1500 height=768 src='" + iframeUrl + "'></iframe>");
+
+  var curSlide = location.hash.substr(1);
+  var notes = '';
+  if (curSlide != 1) {
+    var s = sections[curSlide - 2];
+    notes = formatNotes(s.Notes);
+  }
+
+  w.document.write("<div id='notes' style='margin-top:-210px;font-family:arial'>" + notes + "</div>");
+
+  w.addEventListener('storage', storageEventHandler, false);
+
+  w.document.close();
 };
 
 function formatNotes(notes) {
@@ -31,11 +45,10 @@ function formatNotes(notes) {
     }
   }
   return formattedNotes;
-}
+};
 
+// Listen on storage event to update notes on presenter
 function storageEventHandler(evt) {
-  var w = evt.target.obj;
-
   destSlide = parseInt(localStorage.getItem("destSlide"));
   s = sections[destSlide - 1];
 
@@ -51,4 +64,4 @@ function storageEventHandler(evt) {
       el.innerHTML = '';
     }
   }
-}
+};

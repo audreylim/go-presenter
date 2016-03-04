@@ -512,7 +512,6 @@ function initialize() {
     document.addEventListener('DOMContentLoaded', handleDomLoaded, false);
   }
 
-
   if (presenterMode) {
     window.addEventListener('storage', storageEventHandler, false);
   }
