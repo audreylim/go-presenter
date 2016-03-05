@@ -21,6 +21,8 @@ function handleBodyKeyPress(event) {
 function configurePresenter() {
   w.document.write('<head><title>' + title + '</title></head>');
 
+  var iframeUrl = window.location.href;
+
   w.document.write("<iframe id='p-iframe' style='display:block;margin-top:-242px;transform:scale(0.4, 0.4);margin-left:-460px;' scrolling='no' width=1500 height=768 src='" + iframeUrl + "'></iframe>");
 
   curSlide = parseInt(localStorage.getItem("destSlide"));
