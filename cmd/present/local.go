@@ -85,6 +85,9 @@ func main() {
 		log.Print(localhostWarning)
 	}
 
+	if present.PresenterMode {
+		log.Println("Presenter enabled, press 'P' to open Presenter")
+	}
 	log.Printf("Open your web browser and visit %s", origin.String())
 	log.Fatal(http.Serve(ln, nil))
 }
