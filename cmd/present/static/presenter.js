@@ -1,29 +1,41 @@
 var w = null;
 
+// Don't apply these to presenter window
 if (window.parent == window) {
-  document.addEventListener('keydown', handleBodyKeyPress, false);
-};
+  document.addEventListener('keydown', handleKeyDownPresenter, false);
 
-function handleBodyKeyPress(event) {
-  // 'P' opens presenter window
-  if (event.keyCode == 80) {
-
+  window.onbeforeunload = function() {
+    localStorage.removeItem("destSlide");
     if (w) {
       w.close();
-      w = null;
-    } else {
-      w = window.open('', '', 'width=600,height=640,scrollbars=yes');
-      configurePresenter();
     }
+
+    return null;
   }
 };
 
-function configurePresenter() {
+function handleKeyDownPresenter(event) {
+  // 'P' opens presenter window
+  if (event.keyCode == 80) {
+    if (w) {
+      w.close();
+      w = null;
+      return;
+    }
+
+    w = window.open('', '', 'width=600,height=640,scrollbars=yes');
+    configPresenter();
+  }
+};
+
+function configPresenter() {
   w.document.write('<head><title>' + title + '</title></head>');
 
   var iframeUrl = window.location.href;
-
   w.document.write("<iframe id='p-iframe' style='display:block;margin-top:-242px;transform:scale(0.4, 0.4);margin-left:-460px;' scrolling='no' width=1500 height=768 src='" + iframeUrl + "'></iframe>");
+
+  // Allow navigation from presenter window immediately
+  w.document.getElementById('p-iframe').focus();
 
   curSlide = parseInt(localStorage.getItem("destSlide"));
 
@@ -36,8 +48,6 @@ function configurePresenter() {
   w.document.write("<div id='notes' style='margin-top:-210px;font-family:arial'>" + notes + "</div>");
 
   w.addEventListener('storage', storageEventHandler, false);
-
-  w.document.getElementById('p-iframe').focus();
 
   w.document.close();
 };
@@ -52,7 +62,7 @@ function formatNotes(notes) {
   return formattedNotes;
 };
 
-// Listen on storage event to update notes on presenter
+// Add storage event listener here solely to update notes on presenter
 function storageEventHandler(evt) {
   destSlide = parseInt(localStorage.getItem("destSlide"));
   s = sections[destSlide - 1];
@@ -70,9 +80,3 @@ function storageEventHandler(evt) {
     }
   }
 };
-
-window.onbeforeunload = function() {
-  localStorage.removeItem("destSlide");
-  w.close();
-  return null;
-}
