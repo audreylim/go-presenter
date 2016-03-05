@@ -211,7 +211,9 @@ function prevSlide() {
 
     updateSlides();
 
-    localStorage.setItem("slideNum", curSlide);
+    if (presenterMode) {
+      localStorage.setItem("destSlide", curSlide);
+    }
   }
 };
 
@@ -222,7 +224,9 @@ function nextSlide() {
 
     updateSlides();
 
-    localStorage.setItem("slideNum", curSlide);
+    if (presenterMode) {
+      localStorage.setItem("destSlide", curSlide);
+    }
   }
 };
 
@@ -508,14 +512,17 @@ function initialize() {
     document.addEventListener('DOMContentLoaded', handleDomLoaded, false);
   }
 
-  window.addEventListener('storage', storageEventHandler, false);
+  if (presenterMode) {
+    window.addEventListener('storage', storageEventHandler, false);
+    localStorage.setItem("destSlide", curSlide);
+  }
 }
 
 function storageEventHandler(evt) {
-  var slideNum = localStorage.getItem("slideNum");
-  if (slideNum > curSlide) {
+  var destSlide = localStorage.getItem("destSlide");
+  if (destSlide > curSlide) {
     nextSlide();
-  } else if (slideNum < curSlide) {
+  } else if (destSlide < curSlide) {
     prevSlide();
   }
 }
