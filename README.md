@@ -1,6 +1,6 @@
 # Go Presenter
 
-Go presenter builds of top of the [go present tool](https://github.com/golang/tools) to support presenter notes on a second screen.
+Go Presenter builds of top of the [go present tool](https://github.com/golang/tools) to support presenter notes on a second screen.
 
 ## Demo
 
@@ -12,7 +12,7 @@ http://virtivia.com:27080/16sjso7a4pow9.mov
 
 - Dual screen
 - Syncs both ways
-- Previous and next slide preview from presenter window
+- Previous and next slide preview from Presenter
 
 ## How to Use
 
@@ -25,7 +25,7 @@ Notes are identified by prefixing the paragraph with `& `. Eg.
 
 - Some bullet points
 
-& This is a presenter note that does not appear on the main window.
+& This is a Presenter note that does not appear on the main window.
 
 & This is a second paragraph.
 ```
@@ -34,14 +34,12 @@ Notes are identified by prefixing the paragraph with `& `. Eg.
 
 Run `present` in presenter mode by appending the `-p` flag. This will enable all the Presenter features. 
 
-For example, to open the presenter window, press `P` from your main browser window, as the help text suggests.
+For example, to open Presenter, press `P` from your main browser window.
 
-<img width="856" alt="screen shot 2016-03-04 at 10 03 51 pm" src="https://cloud.githubusercontent.com/assets/4488777/13546073/0ee4ad7a-e257-11e5-824f-70b07b57d7ca.png">
+You can close Presenter from the main window by pressing `P` again. Toggling works.
 
-You can close the presenter screen from the main window by pressing `P` again. Toggling works.
-
-If you close the main window, the presenter window automatically closes.
+If you close the main window, Presenter automatically closes.
 
 ### Flexible command windows
 
-Control your slides from either the presenter window or the main browser window. The same commands (eg. clicks, arrows, enter keys) that apply to the main browser window apply to the presenter window. It syncs both ways.
+Control your slides from either Presenter or the main browser window. The same commands (eg. clicks, arrows, enter keys) that apply to the main browser window apply to Presenter. It syncs both ways.
