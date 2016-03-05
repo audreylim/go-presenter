@@ -1,12 +1,12 @@
 # Go Presenter
 
-Go Presenter builds of top of the [go present tool](https://github.com/golang/tools) to support presenter notes on a second screen.
+Go Presenter builds on top of the [go present tool](https://github.com/golang/tools) to support presenter notes on a second screen.
 
 ## Demo
 
-http://virtivia.com:27080/16sjso7a4pow9.mov
+Video: http://virtivia.com:27080/1vs4fiwjm924q.mov
 
-<img width="1207" alt="screen shot 2016-03-04 at 9 42 11 pm" src="https://cloud.githubusercontent.com/assets/4488777/13545940/0d5780cc-e252-11e5-88d4-4bb9c70fc9a4.png">
+Screenshot: <img width="1207" alt="screen shot 2016-03-04 at 9 42 11 pm" src="https://cloud.githubusercontent.com/assets/4488777/13545940/0d5780cc-e252-11e5-88d4-4bb9c70fc9a4.png">
 
 ## Features
 
