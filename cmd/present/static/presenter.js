@@ -29,7 +29,7 @@ function configurePresenter() {
 
   var notes = '';
   if (curSlide != 1) {
-    var s = sections[curSlide - 2];
+    var s = sections[curSlide - 1];
     notes = formatNotes(s.Notes);
   }
 
@@ -70,3 +70,9 @@ function storageEventHandler(evt) {
     }
   }
 };
+
+window.onbeforeunload = function() {
+  localStorage.removeItem("destSlide");
+  w.close();
+  return null;
+}
