@@ -8,11 +8,21 @@ Video: http://virtivia.com:27080/1vs4fiwjm924q.mov
 
 Screenshot: <img width="1207" alt="screen shot 2016-03-04 at 9 42 11 pm" src="https://cloud.githubusercontent.com/assets/4488777/13545940/0d5780cc-e252-11e5-88d4-4bb9c70fc9a4.png">
 
+## Install
+
+```
+$ cd $GOPATH/src/golang.org/x/tools
+$ git remote add audreylim https://github.com/audreylim/go-presenter
+$ git fetch audreylim
+$ git checkout audreylim/master
+$ go install golang.org/x/tools/cmd/present
+```
+
 ## Features
 
 - Dual screen
 - Syncs both ways
-- Previous and next slide preview from Presenter
+- Sneak preview of previous and next slide on Presenter
 
 ## How to Use
 
@@ -40,6 +50,6 @@ You can close Presenter from the main window by pressing `P` again. Toggling wor
 
 If you close the main window, Presenter automatically closes.
 
-### Flexible command windows
+### Flexible control windows
 
 Control your slides from either Presenter or the main browser window. The same commands (eg. clicks, arrows, enter keys) that apply to the main browser window apply to Presenter. It syncs both ways.
