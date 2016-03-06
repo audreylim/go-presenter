@@ -24,6 +24,10 @@ $ go install golang.org/x/tools/cmd/present
 - Syncs both ways
 - Sneak preview of previous and next slide on Presenter
 
+## Supported Browsers
+
+- Chrome
+
 ## How to Use
 
 ### Syntax
