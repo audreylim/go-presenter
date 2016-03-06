@@ -176,12 +176,6 @@ type List struct {
 	Bullet []string
 }
 
-type Notes struct {
-	Text []string
-}
-
-func (n Notes) TemplateName() string { return "notes" }
-
 func (l List) TemplateName() string { return "list" }
 
 // Lines is a helper for parsing line-based input.

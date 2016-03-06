@@ -34,7 +34,7 @@ function configPresenter() {
   var iframeUrl = window.location.href;
   w.document.write("<iframe id='p-iframe' style='display:block;margin-top:-242px;transform:scale(0.4, 0.4);margin-left:-460px;' scrolling='no' width=1500 height=768 src='" + iframeUrl + "'></iframe>");
 
-  // Allow navigation from presenter window immediately
+  // Enable navigation from presenter window immediately
   w.document.getElementById('p-iframe').focus();
 
   curSlide = parseInt(localStorage.getItem("destSlide"));
@@ -66,15 +66,14 @@ function formatNotes(notes) {
 function storageEventHandler(evt) {
   destSlide = parseInt(localStorage.getItem("destSlide"));
   s = sections[destSlide - 1];
+  var el = w.document.getElementById('notes');
 
   if (s.Notes) {
-    var el = w.document.getElementById('notes');
     if (el) {
       var notes = formatNotes(s.Notes);
       el.innerHTML = notes;
     } 
   } else {
-    var el = w.document.getElementById('notes');
     if (el) {
       el.innerHTML = '';
     }
