@@ -30,7 +30,7 @@ function handleKeyDownPresenter(event) {
 };
 
 function renderLayout() {
-  var titleHTML = "<head><title>" + title + "</head></title>";
+  var titleHTML = "<head><title>" + title + "</title></head>";
 
   var slidesUrl = window.location.href;
   var slidesIframeHTML = "<iframe id='p-iframe'"
