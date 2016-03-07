@@ -1,6 +1,7 @@
+// There will only be one 'w' (Presenter) object at any time
 var w = null;
 
-// Don't apply these to presenter window
+// Apply to main browser window only
 if (window.parent == window) {
   document.addEventListener('keydown', handleKeyDownPresenter, false);
 
@@ -24,28 +25,43 @@ function handleKeyDownPresenter(event) {
     }
 
     w = window.open('', '', 'width=600,height=640,scrollbars=yes');
-    configPresenter();
+    renderLayout();
   }
 };
 
-function configPresenter() {
-  w.document.write('<head><title>' + title + '</title></head>');
+function renderLayout() {
+  var titleHTML = "<head><title>" + title + "</head></title>";
 
-  var iframeUrl = window.location.href;
-  w.document.write("<iframe id='p-iframe' style='display:block;margin-top:-242px;transform:scale(0.4, 0.4);margin-left:-460px;' scrolling='no' width=1500 height=768 src='" + iframeUrl + "'></iframe>");
-
-  // Enable navigation from presenter window immediately
-  w.document.getElementById('p-iframe').focus();
+  var slidesUrl = window.location.href;
+  var slidesIframeHTML = "<iframe id='p-iframe'"
+                       + " style='display:block;"
+                         + "margin-top:-242px;"
+                         + "transform:scale(0.4, 0.4);"
+                         + "margin-left:-460px;'"
+                       + " scrolling='no'"
+                       + " width=1500 height=768"
+                       + " src='" + slidesUrl + "'>"
+                       + "</iframe>";
 
   curSlide = parseInt(localStorage.getItem("destSlide"));
-
   var notes = '';
   if (curSlide != 1) {
     var s = sections[curSlide - 1];
-    notes = formatNotes(s.Notes);
+    if (s) {
+      notes = formatNotes(s.Notes);
+    }
   }
-
-  w.document.write("<div id='notes' style='margin-top:-210px;font-family:arial'>" + notes + "</div>");
+  var notesHTML = "<div id='notes'"
+                + "style='margin-top:-210px;"
+                  + "font-family:arial'>"
+                  + notes
+                + "</div>";
+  
+  w.document.write(titleHTML);
+  w.document.write(slidesIframeHTML);
+  // Enable navigation from presenter window immediately
+  w.document.getElementById('p-iframe').focus();
+  w.document.write(notesHTML);
 
   w.addEventListener('storage', storageEventHandler, false);
 
