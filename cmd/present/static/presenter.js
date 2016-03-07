@@ -51,7 +51,7 @@ function renderLayout() {
       notes = formatNotes(s.Notes);
     }
   }
-  var notesHTML = "<div id='notes'"
+  var notesHTML = "<div id='p-notes'"
                 + "style='margin-top:-210px;"
                   + "font-family:arial'>"
                   + notes
@@ -82,7 +82,7 @@ function formatNotes(notes) {
 function storageEventHandler(evt) {
   destSlide = parseInt(localStorage.getItem("destSlide"));
   s = sections[destSlide - 1];
-  var el = w.document.getElementById('notes');
+  var el = w.document.getElementById('p-notes');
 
   if (s.Notes) {
     if (el) {
