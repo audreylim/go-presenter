@@ -1,6 +1,6 @@
-# Go Presenter
+# Presenter
 
-Go Presenter builds on top of the [go present tool](https://github.com/golang/tools) to support presenter notes on a second screen.
+Presenter builds on top of the [go present tool](https://github.com/golang/tools) to support presenter notes on a second screen.
 
 ## Demo
 
@@ -35,6 +35,8 @@ $ go install golang.org/x/tools/cmd/present
 Notes are identified by prefixing the paragraph with `& `. Eg.
 
 ```
+// example.slide
+
 * Section title
 
 - Some bullet points
@@ -46,14 +48,24 @@ Notes are identified by prefixing the paragraph with `& `. Eg.
 
 ### Presenter Mode
 
-Run `present` in presenter mode by appending the `-p` flag. This will enable all the Presenter features. 
+Run `present` in presenter mode by appending the `-p` flag. 
 
-For example, to open Presenter, press `P` from your main browser window.
+```
+$ present -p
+```
 
-You can close Presenter from the main window by pressing `P` again. Toggling works.
+This will enable all the Presenter features. For example, to open Presenter, press `P` from your main browser window.
 
-If you close the main window, Presenter automatically closes.
+You can close Presenter from the main window by pressing `P` again, as long as you toggle from the main browser. If you close the main window, Presenter automatically closes.
 
-### Flexible control windows
+### Flexible Control Windows
 
 Control your slides from either Presenter or the main browser window. The same commands (eg. clicks, arrows, enter keys) that apply to the main browser window apply to Presenter. It syncs both ways.
+
+## What Presenter Does Not Do
+
+Presenter currently does not sync `.play` actions like `Run`. There's a bit more complexity in enabling that, but this might be added in future.
+
+Eg. Clicking `Run` from the main browser or Presenter will not sync with the other window.
+
+<img width="671" alt="screen shot 2016-03-06 at 8 23 53 pm" src="https://cloud.githubusercontent.com/assets/4488777/13560852/7e3ed6ae-e3d9-11e5-946c-8202bf3a0593.png">
