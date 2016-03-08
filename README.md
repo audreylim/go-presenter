@@ -10,6 +10,8 @@ Screenshot: <img width="1207" alt="screen shot 2016-03-04 at 9 42 11 pm" src="ht
 
 ## Install
 
+There is currently a [proposal](https://github.com/golang/go/issues/14654) to merge this upstream. Meanwhile, you can install Presenter by running the following commands:
+
 ```
 $ cd $GOPATH/src/golang.org/x/tools
 $ git remote add audreylim https://github.com/audreylim/go-presenter
@@ -23,6 +25,7 @@ $ go install golang.org/x/tools/cmd/present
 - Dual screen
 - Syncs both ways
 - Sneak preview of previous and next slide on Presenter
+- Enabling of Presenter mode keeps Presenter features and actions separate from the original `present` app, ie. it will not interfere with the `present` if not enabled
 
 ## Supported Browsers
 
@@ -69,3 +72,7 @@ Presenter currently does not sync `.play` actions like `Run`. There's a bit more
 Eg. Clicking `Run` from the main browser or Presenter will not sync with the other window.
 
 <img width="671" alt="screen shot 2016-03-06 at 8 23 53 pm" src="https://cloud.githubusercontent.com/assets/4488777/13560852/7e3ed6ae-e3d9-11e5-946c-8202bf3a0593.png">
+
+## TODO
+
+- Implement timer
