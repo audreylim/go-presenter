@@ -56,7 +56,7 @@ function renderLayout() {
                   + "font-family:arial'>"
                 + notes
                 + "</div>";
-  
+
   w.document.write(titleHTML);
   w.document.write(slidesIframeHTML);
   // Enable navigation from presenter window immediately
@@ -88,7 +88,7 @@ function storageEventHandler(evt) {
     if (el) {
       var notes = formatNotes(s.Notes);
       el.innerHTML = notes;
-    } 
+    }
   } else {
     if (el) {
       el.innerHTML = '';

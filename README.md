@@ -51,7 +51,7 @@ Notes are identified by prefixing the paragraph with `& `. Eg.
 
 ### Presenter Mode
 
-Run `present` in presenter mode by appending the `-p` flag. 
+Run `present` in presenter mode by appending the `-p` flag.
 
 ```
 $ present -p
