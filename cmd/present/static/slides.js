@@ -211,7 +211,7 @@ function prevSlide() {
 
     updateSlides();
 
-    if (presenterMode) {
+    if (presenterEnabled) {
       localStorage.setItem("destSlide", curSlide);
     }
   }
@@ -224,7 +224,7 @@ function nextSlide() {
 
     updateSlides();
 
-    if (presenterMode) {
+    if (presenterEnabled) {
       localStorage.setItem("destSlide", curSlide);
     }
   }
@@ -512,7 +512,7 @@ function initialize() {
     document.addEventListener('DOMContentLoaded', handleDomLoaded, false);
   }
 
-  if (presenterMode) {
+  if (presenterEnabled) {
     window.addEventListener('storage', storageEventHandler, false);
     localStorage.setItem("destSlide", curSlide);
   }

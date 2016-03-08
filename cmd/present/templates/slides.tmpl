@@ -8,11 +8,11 @@
     <meta charset='utf-8'>
 
     <script>
-      var presenterMode = {{.PresenterMode}};
+      var presenterEnabled = {{.PresenterEnabled}};
     </script>
     <script src='/static/slides.js'></script>
 
-    {{if .PresenterMode}}
+    {{if .PresenterEnabled}}
     <script>
       var sections = {{.Sections}};
       var title = {{.Title}};
