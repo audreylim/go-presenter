@@ -25,7 +25,7 @@ $ go install golang.org/x/tools/cmd/present
 - Dual screen
 - Syncs both ways
 - Sneak preview of previous and next slide on Presenter
-- Enabling of Presenter mode keeps Presenter features and actions separate from the original `present` app, ie. it will not interfere with the `present` if not enabled
+- Enabling of Presenter mode keeps Presenter features and actions separate from the original `present` app, ie. it will not interfere with `present` if not enabled
 
 ## Supported Browsers
 
