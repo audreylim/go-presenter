@@ -85,6 +85,9 @@
     </div>
 
     {{if .PlayEnabled}}
+    <script>
+      var presenterEnabled = {{.PresenterEnabled}};
+    </script>
     <script src='/play.js'></script>
     {{end}}
 

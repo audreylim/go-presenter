@@ -42,22 +42,54 @@ function initPlayground(transport) {
 
 		function onKill() {
 			if (running) running.Kill();
+                       if (presenterEnabled) {
+                               localStorage.setItem("play", "kill");
+                       }
+		}
+
+               function onkill() {
+			if (running) running.Kill();
 		}
 
 		function onRun(e) {
-			onKill();
+			onkill();
 			output.style.display = "block";
 			outpre.innerHTML = "";
 			run1.style.display = "none";
 			var options = {Race: e.shiftKey};
 			running = transport.Run(text(code), PlaygroundOutput(outpre), options);
+                       if (presenterEnabled) {
+                           localStorage.setItem("play", "run");
+                       }
 		}
 
 		function onClose() {
-			onKill();
+			onkill();
 			output.style.display = "none";
 			run1.style.display = "inline-block";
+                       if (presenterEnabled) {
+                           localStorage.setItem("play", "close");
+                       }
 		}
+
+              if (presenterEnabled) {
+                  window.addEventListener("storage", storageEvtHandler, false);
+
+                  function storageEvtHandler(e) {
+                      var play = localStorage.getItem("play");
+                      switch (play) {
+                          case "run":
+                              onRun(e);
+                              break;
+                          case "close":
+                              onClose();
+                              break;
+                          case "kill":
+                              onKill();
+                              break;
+                      }
+                  }
+              }
 
 		var run1 = document.createElement('button');
 		run1.innerHTML = 'Run';

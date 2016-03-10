@@ -9,6 +9,7 @@ if (window.parent == window) {
 
   window.onbeforeunload = function() {
     localStorage.removeItem("destSlide");
+    localStorage.removeItem("play");
     if (w) {
       w.close();
     }
