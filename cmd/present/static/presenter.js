@@ -10,6 +10,12 @@ if (window.parent == window) {
   window.onbeforeunload = function() {
     localStorage.removeItem("destSlide");
     localStorage.removeItem("play");
+    localStorage.removeItem("width");
+    localStorage.removeItem("height");
+    localStorage.removeItem("right");
+    localStorage.removeItem("bottom");
+    localStorage.removeItem("top");
+    localStorage.removeItem("left");
     if (w) {
       w.close();
     }

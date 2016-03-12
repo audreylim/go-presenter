@@ -40,6 +40,23 @@ function initPlayground(transport) {
 			});
 		}
 
+    $(output).bind('resize', function(event) {
+      if ($(event.target).hasClass('ui-resizable')) {
+          var width = $(output).css('width');
+          var height = $(output).css('height');
+          var right = $(output).css('right');
+          var bottom = $(output).css('bottom');
+          var top = $(output).css('top');
+          var left = $(output).css('left');
+          localStorage.setItem("width", width);
+          localStorage.setItem("height", height);
+          localStorage.setItem("right", right);
+          localStorage.setItem("bottom", bottom);
+          localStorage.setItem("top", top);
+          localStorage.setItem("left", left);
+      }
+    })
+
 		function onKill() {
 			if (running) running.Kill();
                        if (presenterEnabled) {
@@ -87,7 +104,22 @@ function initPlayground(transport) {
                           case "kill":
                               onKill();
                               break;
+
+
                       }
+                      var width = localStorage.getItem("width");
+                      var height = localStorage.getItem("height");
+                      var top = localStorage.getItem("top");
+                      var left = localStorage.getItem("left");
+                      var right = localStorage.getItem("right");
+                      var bottom = localStorage.getItem("bottom");
+                      $(output).css('width', width);
+                      $(output).css('height', height);
+                      $(output).css('top', top);
+                      $(output).css('left', left);
+                      $(output).css('right', right);
+                      $(output).css('bottom', bottom);
+                      $(output).css('max-height', '608px');
                   }
               }
 
