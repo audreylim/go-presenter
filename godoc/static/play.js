@@ -26,6 +26,7 @@ function initPlayground(transport) {
 	}
 
 	var onRuns = [];
+	var onRun2s = [];
 	var onCloses = [];
 	var onKills = [];
 
@@ -68,12 +69,12 @@ function initPlayground(transport) {
 			}
 		}
 
-		function kill() {
+		function onkill() {
 			if (running) running.Kill();
 		}
 
 		function onRun(e) {
-			kill();
+			onkill();
 			output.style.display = "block";
 			outpre.innerHTML = "";
 			run1.style.display = "none";
@@ -85,8 +86,25 @@ function initPlayground(transport) {
 			}
 		}
 
+		var runNum = 0;
+
+		function onRun2(e) {
+			onkill();
+			output.style.display = "block";
+			outpre.innerHTML = "";
+			run1.style.display = "none";
+			var options = {Race: e.shiftKey};
+			running = transport.Run(text(code), PlaygroundOutput(outpre), options);
+			if (presenterEnabled) {
+				runNum += 1;
+				localStorage.setItem("play", "run2" + runNum);
+				localStorage.setItem("index", index);
+			}
+		}
+
+
 		function onClose() {
-			kill();
+			onkill();
 			output.style.display = "none";
 			run1.style.display = "inline-block";
 			if (presenterEnabled) {
@@ -95,6 +113,7 @@ function initPlayground(transport) {
 		}
 
 		onRuns.push(onRun);
+		onRun2s.push(onRun2);
 		onCloses.push(onClose);
 		onKills.push(onKill);
 
@@ -105,7 +124,7 @@ function initPlayground(transport) {
 		var run2 = document.createElement('button');
 		run2.className = 'run';
 		run2.innerHTML = 'Run';
-		run2.addEventListener("click", onRun, false);
+		run2.addEventListener("click", onRun2, false);
 		var kill = document.createElement('button');
 		kill.className = 'kill';
 		kill.innerHTML = 'Kill';
@@ -157,7 +176,12 @@ function initPlayground(transport) {
 				case "kill":
 					onKills[i](e);
 					break;
+				
 			}
+			if (play && play.includes("run2")) {
+				onRun2s[i](e);
+			}
+			
 			var width = localStorage.getItem("width");
 			var height = localStorage.getItem("height");
 			var top = localStorage.getItem("top");
