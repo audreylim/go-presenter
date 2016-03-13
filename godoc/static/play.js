@@ -25,7 +25,9 @@ function initPlayground(transport) {
 		return s.replace("\xA0", " "); // replace non-breaking spaces
 	}
 
-	function init(code) {
+	var onRuns = [];
+
+	function init(code, index) {
 		var output = document.createElement('div');
 		var outpre = document.createElement('pre');
 		var running;
@@ -77,8 +79,11 @@ function initPlayground(transport) {
 			running = transport.Run(text(code), PlaygroundOutput(outpre), options);
 			if (presenterEnabled) {
 				localStorage.setItem("play", "run");
+				localStorage.setItem("index", index);
 			}
 		}
+
+		onRuns.push(onRun);
 
 		function onClose() {
 			onkill();
@@ -90,13 +95,15 @@ function initPlayground(transport) {
 		}
 
 		if (presenterEnabled) {
+			console.log("the code is ", code)
 			window.addEventListener("storage", storageEvtHandler, false);
 
 			function storageEvtHandler(e) {
 				var play = localStorage.getItem("play");
 				switch (play) {
 					case "run":
-						onRun(e);
+						var index  = localStorage.getItem("index");
+						onRuns[index](e);
 						break;
 					case "close":
 						onClose();
@@ -118,6 +125,7 @@ function initPlayground(transport) {
 				$(output).css('right', right);
 				$(output).css('bottom', bottom);
 				$(output).css('max-height', '608px');
+
 			}
 		}
 
@@ -137,6 +145,8 @@ function initPlayground(transport) {
 		close.className = 'close';
 		close.innerHTML = 'Close';
 		close.addEventListener("click", onClose, false);
+
+		//sourceCodeDiv.addEventListener("input", ...);
 
 		var button = document.createElement('div');
 		button.classList.add('buttons');
@@ -159,7 +169,8 @@ function initPlayground(transport) {
 
 	var play = document.querySelectorAll('div.playground');
 	for (var i = 0; i < play.length; i++) {
-		init(play[i]);
+		init(play[i], i);
 	}
+	console.log("onRuns: ", onRuns);
 }
 
