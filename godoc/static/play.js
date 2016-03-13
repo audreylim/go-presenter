@@ -26,6 +26,8 @@ function initPlayground(transport) {
 	}
 
 	var onRuns = [];
+	var onCloses = [];
+	var onKills = [];
 
 	function init(code, index) {
 		var output = document.createElement('div');
@@ -66,12 +68,12 @@ function initPlayground(transport) {
 			}
 		}
 
-		function onkill() {
+		function kill() {
 			if (running) running.Kill();
 		}
 
 		function onRun(e) {
-			onkill();
+			kill();
 			output.style.display = "block";
 			outpre.innerHTML = "";
 			run1.style.display = "none";
@@ -83,10 +85,8 @@ function initPlayground(transport) {
 			}
 		}
 
-		onRuns.push(onRun);
-
 		function onClose() {
-			onkill();
+			kill();
 			output.style.display = "none";
 			run1.style.display = "inline-block";
 			if (presenterEnabled) {
@@ -94,40 +94,9 @@ function initPlayground(transport) {
 			}
 		}
 
-		if (presenterEnabled) {
-			console.log("the code is ", code)
-			window.addEventListener("storage", storageEvtHandler, false);
-
-			function storageEvtHandler(e) {
-				var play = localStorage.getItem("play");
-				switch (play) {
-					case "run":
-						var index  = localStorage.getItem("index");
-						onRuns[index](e);
-						break;
-					case "close":
-						onClose();
-						break;
-					case "kill":
-						onKill();
-						break;
-				}
-				var width = localStorage.getItem("width");
-				var height = localStorage.getItem("height");
-				var top = localStorage.getItem("top");
-				var left = localStorage.getItem("left");
-				var right = localStorage.getItem("right");
-				var bottom = localStorage.getItem("bottom");
-				$(output).css('width', width);
-				$(output).css('height', height);
-				$(output).css('top', top);
-				$(output).css('left', left);
-				$(output).css('right', right);
-				$(output).css('bottom', bottom);
-				$(output).css('max-height', '608px');
-
-			}
-		}
+		onRuns.push(onRun);
+		onCloses.push(onClose);
+		onKills.push(onKill);
 
 		var run1 = document.createElement('button');
 		run1.innerHTML = 'Run';
@@ -171,6 +140,40 @@ function initPlayground(transport) {
 	for (var i = 0; i < play.length; i++) {
 		init(play[i], i);
 	}
-	console.log("onRuns: ", onRuns);
+
+	if (presenterEnabled) {
+		window.addEventListener("storage", storageEvtHandler, false);
+
+		function storageEvtHandler(e) {
+			var play = localStorage.getItem("play");
+			var i  = localStorage.getItem("index");
+			switch (play) {
+				case "run":
+					onRuns[i](e);
+					break;
+				case "close":
+					onCloses[i](e);
+					break;
+				case "kill":
+					onKills[i](e);
+					break;
+			}
+			var width = localStorage.getItem("width");
+			var height = localStorage.getItem("height");
+			var top = localStorage.getItem("top");
+			var left = localStorage.getItem("left");
+			var right = localStorage.getItem("right");
+			var bottom = localStorage.getItem("bottom");
+
+			var output = document.querySelectorAll('.output');
+			$(output[i]).css('width', width);
+			$(output[i]).css('height', height);
+			$(output[i]).css('top', top);
+			$(output[i]).css('left', left);
+			$(output[i]).css('right', right);
+			$(output[i]).css('bottom', bottom);
+			$(output[i]).css('max-height', '608px');
+		}
+	}
 }
 

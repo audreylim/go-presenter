@@ -16,6 +16,7 @@ if (window.parent == window) {
     localStorage.removeItem("bottom");
     localStorage.removeItem("top");
     localStorage.removeItem("left");
+    localStorage.removeItem("index");
     if (w) {
       w.close();
     }
