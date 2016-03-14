@@ -62,6 +62,35 @@ function initPlayground(transport) {
 			}
 		})
 
+		window.addEventListener("input", inputHandler, false);
+
+		function inputHandler(e) {
+			var sel = document.getSelection();
+			var an = sel.anchorNode.parentNode;
+  //    an.textContent = sel.anchorNode.data;
+ //      console.log("an classname", sel.anchorNode.parentNode.attributes.getNamedItem('num').value);
+  //    console.log("an", an);
+  //    console.log("an text", an.textContent);
+  //    console.log("an data", sel.anchorNode.data);
+  //
+			localStorage.setItem("index", 0);
+			console.log("INDEX", 0);
+			localStorage.setItem("newText", an.innerHTML);
+			localStorage.setItem("spanNum", an.attributes.getNamedItem('num').value);
+  //     var spans = document.getElementsByTagName("span");
+  //     consTole.log("span", spans[10]);
+  //     console.log("e", e.target.getElementsByTagName("span"));
+  //     console.log("oe", e.originalTarget);
+    }
+  //
+  //  window.addEventListener("DOMCharacterDataModified", inputWHandler, false);
+  //
+  //  function inputWHandler(e) {
+  //  var elem = e.target.parentNode;
+  //  alert("Element: " + elem.tagName + "  class name: " + elem.className + elem);
+  //  }
+  //
+
 		function onKill() {
 			if (running) running.Kill();
 			if (presenterEnabled) {
@@ -134,8 +163,6 @@ function initPlayground(transport) {
 		close.innerHTML = 'Close';
 		close.addEventListener("click", onClose, false);
 
-		//sourceCodeDiv.addEventListener("input", ...);
-
 		var button = document.createElement('div');
 		button.classList.add('buttons');
 		button.appendChild(run1);
@@ -162,11 +189,16 @@ function initPlayground(transport) {
 
 	if (presenterEnabled) {
 		window.addEventListener("storage", storageEvtHandler, false);
+//		window.addEventListener("input", inputHandler, false);
+
+//		function inputHandler(e) {
+//			localStorage.setItem("innerText", play[2].innerText);
+//    }
 
 		function storageEvtHandler(e) {
-			var play = localStorage.getItem("play");
+			var play1 = localStorage.getItem("play");
 			var i  = localStorage.getItem("index");
-			switch (play) {
+			switch (play1) {
 				case "run":
 					onRuns[i](e);
 					break;
@@ -178,9 +210,36 @@ function initPlayground(transport) {
 					break;
 				
 			}
-			if (play && play.includes("run2")) {
+			if (play1 && play1.includes("run2")) {
 				onRun2s[i](e);
 			}
+			var newText = localStorage.getItem("newText");
+			var spanNum = localStorage.getItem("spanNum");
+			if (newText) {
+			var cp = play[i];
+			console.log("cp", cp);
+			//      var cp = "div", document.getElementsByClassName('code')[0].lastChild.childNodes;
+			var numAttr = "[num=\"" + spanNum + "\"]";
+			console.log("numattr", numAttr);
+			//console.log(cp.querySelectorAll(numAttr));
+			var el = cp.querySelector(numAttr);
+			console.log("el", el.innerHTML);
+			//     console.log("elhtml", el[0].innerHTML);
+			//    console.log("el newtext", newText);
+			el.innerHTML = newText;
+//      while(el.firstChild) {
+//        el[0].removeChild(el[0].firstChild);
+//      }
+//      el[0].appendChild(document.createTextNode("some new content"));
+
+        //var an = anchorNode.parentNode;
+//        anchorNode.textContent = anchorNode.data;
+      }
+
+  //    var innertxt = localStorage.getItem("innerText"); 
+   //   if (innertxt) {
+    //    $(play[2]).text(innertxt);
+     // }
 			
 			var width = localStorage.getItem("width");
 			var height = localStorage.getItem("height");
