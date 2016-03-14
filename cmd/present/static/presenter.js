@@ -17,8 +17,7 @@ if (window.parent == window) {
     localStorage.removeItem("top");
     localStorage.removeItem("left");
     localStorage.removeItem("index");
-    localStorage.removeItem("newText");
-    localStorage.removeItem("spanNum");
+    localStorage.removeItem("et");
     if (w) {
       w.close();
     }
