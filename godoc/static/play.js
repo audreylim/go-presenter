@@ -109,6 +109,7 @@ function initPlayground(transport) {
 			run1.style.display = "inline-block";
 			if (presenterEnabled) {
 				localStorage.setItem("play", "close");
+				localStorage.setItem("index", index);
 			}
 		}
 
