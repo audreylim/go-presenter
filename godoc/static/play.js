@@ -47,21 +47,14 @@ function initPlayground(transport) {
 
 		$(output).bind('resize', function(event) {
 			if ($(event.target).hasClass('ui-resizable')) {
-				var width = $(output).css('width');
-				var height = $(output).css('height');
-				var right = $(output).css('right');
-				var bottom = $(output).css('bottom');
-				var top = $(output).css('top');
-				var left = $(output).css('left');
-				localStorage.setItem("width", width);
-				localStorage.setItem("height", height);
-				localStorage.setItem("right", right);
-				localStorage.setItem("bottom", bottom);
-				localStorage.setItem("top", top);
-				localStorage.setItem("left", left);
+				localStorage.setItem("width", output.style.width);
+				localStorage.setItem("height", output.style.height);
+				localStorage.setItem("right", output.style.right);
+				localStorage.setItem("bottom", output.style.bottom);
+				localStorage.setItem("top", output.style.top);
+				localStorage.setItem("left", output.style.left);
 			}
 		})
-
 
 		function onKill() {
 			if (running) running.Kill();
@@ -70,12 +63,8 @@ function initPlayground(transport) {
 			}
 		}
 
-		function onkill() {
-			if (running) running.Kill();
-		}
-
 		function onRun(e) {
-			onkill();
+			if (running) running.Kill();
 			output.style.display = "block";
 			outpre.innerHTML = "";
 			run1.style.display = "none";
@@ -90,7 +79,7 @@ function initPlayground(transport) {
 		var runNum = 0;
 
 		function onRun2(e) {
-			onkill();
+			if (running) running.Kill();
 			output.style.display = "block";
 			outpre.innerHTML = "";
 			run1.style.display = "none";
@@ -104,7 +93,7 @@ function initPlayground(transport) {
 		}
 
 		function onClose() {
-			onkill();
+			if (running) running.Kill();
 			output.style.display = "none";
 			run1.style.display = "inline-block";
 			if (presenterEnabled) {
@@ -123,6 +112,12 @@ function initPlayground(transport) {
 		function inputHandler(e) {
 			localStorage.setItem("et", e.target.innerHTML);
 			localStorage.setItem("index", index);
+		}
+
+		var et = localStorage.getItem("et");
+		if (et) {
+			var cp = code;
+			cp.innerHTML = et;
 		}
 
 		var run1 = document.createElement('button');
@@ -193,21 +188,14 @@ function initPlayground(transport) {
 				cp.innerHTML = et;
 			}
 
-			var width = localStorage.getItem("width");
-			var height = localStorage.getItem("height");
-			var top = localStorage.getItem("top");
-			var left = localStorage.getItem("left");
-			var right = localStorage.getItem("right");
-			var bottom = localStorage.getItem("bottom");
-
-			var output = document.querySelectorAll('.output');
-			$(output[i]).css('width', width);
-			$(output[i]).css('height', height);
-			$(output[i]).css('top', top);
-			$(output[i]).css('left', left);
-			$(output[i]).css('right', right);
-			$(output[i]).css('bottom', bottom);
-			$(output[i]).css('max-height', '608px');
+			var outputs = document.querySelectorAll('.output');
+      outputs[i].style.width = localStorage.getItem('width');
+      outputs[i].style.height = localStorage.getItem('height');
+      outputs[i].style.top = localStorage.getItem('top');
+      outputs[i].style.left = localStorage.getItem('left');
+      outputs[i].style.right = localStorage.getItem('right');
+      outputs[i].style.bottom = localStorage.getItem('bottom');
+      outputs[i].style.maxHeight = '608px'; 
 		}
 
 	}
