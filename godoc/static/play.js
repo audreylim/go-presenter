@@ -103,7 +103,6 @@ function initPlayground(transport) {
 			}
 		}
 
-
 		function onClose() {
 			onkill();
 			output.style.display = "none";
@@ -117,6 +116,13 @@ function initPlayground(transport) {
 		onRun2s.push(onRun2);
 		onCloses.push(onClose);
 		onKills.push(onKill);
+
+		code.addEventListener("input", inputHandler, false);
+
+		function inputHandler(e) {
+			localStorage.setItem("et", e.target.innerHTML);
+			localStorage.setItem("index", index);
+		}
 
 		var run1 = document.createElement('button');
 		run1.innerHTML = 'Run';
@@ -161,11 +167,6 @@ function initPlayground(transport) {
 
 	if (presenterEnabled) {
 		window.addEventListener("storage", storageEvtHandler, false);
-//		window.addEventListener("input", inputHandler, false);
-
-//		function inputHandler(e) {
-//			localStorage.setItem("innerText", play[2].innerText);
-//    }
 
 		function storageEvtHandler(e) {
 			var play1 = localStorage.getItem("play");
@@ -208,11 +209,5 @@ function initPlayground(transport) {
 			$(output[i]).css('max-height', '608px');
 		}
 
-		window.addEventListener("input", inputHandler, false);
-
-		function inputHandler(e) {
-			localStorage.setItem("et", e.target.innerHTML);
-			localStorage.setItem("index", 0);
-		}
 	}
 }
