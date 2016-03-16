@@ -9,7 +9,7 @@ if (window.parent == window) {
 
   window.onbeforeunload = function() {
     localStorage.removeItem("destSlide");
-    localStorage.removeItem("play");
+    localStorage.removeItem("playAction");
     localStorage.removeItem("width");
     localStorage.removeItem("height");
     localStorage.removeItem("right");
@@ -17,7 +17,7 @@ if (window.parent == window) {
     localStorage.removeItem("top");
     localStorage.removeItem("left");
     localStorage.removeItem("index");
-    localStorage.removeItem("et");
+    localStorage.removeItem("playCode");
     if (w) {
       w.close();
     }

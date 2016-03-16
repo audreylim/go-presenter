@@ -59,7 +59,8 @@ function initPlayground(transport) {
 		function onKill() {
 			if (running) running.Kill();
 			if (presenterEnabled) {
-				localStorage.setItem("play", "kill");
+				localStorage.setItem("index", index);
+				localStorage.setItem("playAction", "kill");
 			}
 		}
 
@@ -71,8 +72,8 @@ function initPlayground(transport) {
 			var options = {Race: e.shiftKey};
 			running = transport.Run(text(code), PlaygroundOutput(outpre), options);
 			if (presenterEnabled) {
-				localStorage.setItem("play", "run");
 				localStorage.setItem("index", index);
+				localStorage.setItem("playAction", "run");
 			}
 		}
 
@@ -87,8 +88,8 @@ function initPlayground(transport) {
 			running = transport.Run(text(code), PlaygroundOutput(outpre), options);
 			if (presenterEnabled) {
 				runNum += 1;
-				localStorage.setItem("play", "run2" + runNum);
 				localStorage.setItem("index", index);
+				localStorage.setItem("playAction", "run2" + runNum);
 			}
 		}
 
@@ -97,8 +98,8 @@ function initPlayground(transport) {
 			output.style.display = "none";
 			run1.style.display = "inline-block";
 			if (presenterEnabled) {
-				localStorage.setItem("play", "close");
 				localStorage.setItem("index", index);
+				localStorage.setItem("playAction", "close");
 			}
 		}
 
@@ -110,14 +111,14 @@ function initPlayground(transport) {
 		code.addEventListener("input", inputHandler, false);
 
 		function inputHandler(e) {
-			localStorage.setItem("et", e.target.innerHTML);
+			localStorage.setItem("playCode", e.target.innerHTML);
 			localStorage.setItem("index", index);
 		}
 
-		var et = localStorage.getItem("et");
-		if (et) {
-			var cp = code;
-			cp.innerHTML = et;
+		var playCode = localStorage.getItem("playCode");
+		if (playCode) {
+			var c = code;
+			c.innerHTML = playCode;
 		}
 
 		var run1 = document.createElement('button');
@@ -165,37 +166,53 @@ function initPlayground(transport) {
 		window.addEventListener("storage", storageEvtHandler, false);
 
 		function storageEvtHandler(e) {
-			var play1 = localStorage.getItem("play");
-			var i  = localStorage.getItem("index");
-			switch (play1) {
-				case "run":
-					onRuns[i](e);
-					break;
-				case "close":
-					onCloses[i](e);
-					break;
-				case "kill":
-					onKills[i](e);
-					break;
-				
-			}
-			if (play1 && play1.includes("run2")) {
+      var i;
+
+			var playAction = localStorage.getItem("playAction");
+      if (playAction) {
+			  i = localStorage.getItem("index");
+      }
+
+      switch (playAction) {
+        case 'run':
+          if (playAction === 'run' && i && e.key === 'playAction') {
+			  	  onRuns[i](e);
+            break;
+          } else if (e.key === 'index' && e.oldValue) {
+			  	  onRuns[i](e);
+          }
+        case 'close':
+          if (playAction === 'close' && i) {
+			  	  onCloses[i](e);
+            break;
+          }
+        case 'kill':
+          if (playAction === 'kill' && i) {
+			  	  onKills[i](e);
+            break;
+          }
+      }
+
+			if (playAction && playAction.includes("run2")) {
 				onRun2s[i](e);
 			}
-			var et = localStorage.getItem("et");
-			if (et) {
-				var cp = play[i];
-				cp.innerHTML = et;
+
+			if (e.key === 'playCode') {
+			  var playCode = localStorage.getItem("playCode");
+				var c = play[i];
+				c.innerHTML = playCode;
 			}
 
-			var outputs = document.querySelectorAll('.output');
-      outputs[i].style.width = localStorage.getItem('width');
-      outputs[i].style.height = localStorage.getItem('height');
-      outputs[i].style.top = localStorage.getItem('top');
-      outputs[i].style.left = localStorage.getItem('left');
-      outputs[i].style.right = localStorage.getItem('right');
-      outputs[i].style.bottom = localStorage.getItem('bottom');
-      outputs[i].style.maxHeight = '608px'; 
+      if (e.key === 'width') {
+        var outputs = document.querySelectorAll('.output');
+        outputs[i].style.width = localStorage.getItem('width');
+        outputs[i].style.height = localStorage.getItem('height');
+        outputs[i].style.top = localStorage.getItem('top');
+        outputs[i].style.left = localStorage.getItem('left');
+        outputs[i].style.right = localStorage.getItem('right');
+        outputs[i].style.bottom = localStorage.getItem('bottom');
+        outputs[i].style.maxHeight = '608px'; 
+      }
 		}
 
 	}
