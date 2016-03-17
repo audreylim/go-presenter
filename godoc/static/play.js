@@ -25,12 +25,9 @@ function initPlayground(transport) {
 		return s.replace("\xA0", " "); // replace non-breaking spaces
 	}
 
-	var onRuns = [];
-	var onRun2s = [];
-	var onCloses = [];
-	var onKills = [];
-
 	function init(code, index) {
+    code.id = index;
+
 		var output = document.createElement('div');
 		var outpre = document.createElement('pre');
 		var running;
@@ -161,59 +158,55 @@ function initPlayground(transport) {
 	for (var i = 0; i < play.length; i++) {
 		init(play[i], i);
 	}
+}
 
-	if (presenterEnabled) {
-		window.addEventListener("storage", storageEvtHandler, false);
+var onRuns = [];
+var onRun2s = [];
+var onCloses = [];
+var onKills = [];
 
-		function storageEvtHandler(e) {
-      var i;
+function syncPlay(e) {
+	var playAction = localStorage.getItem("playAction");
+	var i = localStorage.getItem("index");
 
-			var playAction = localStorage.getItem("playAction");
-      if (playAction) {
-			  i = localStorage.getItem("index");
+  switch (playAction) {
+    case 'run':
+      if (playAction === 'run' && e.key === 'playAction') {
+	  	  onRuns[i](e);
+        break;
+      } else if (e.key === 'index' && e.oldValue) {
+	  	  onRuns[i](e);
       }
-
-      switch (playAction) {
-        case 'run':
-          if (playAction === 'run' && i && e.key === 'playAction') {
-			  	  onRuns[i](e);
-            break;
-          } else if (e.key === 'index' && e.oldValue) {
-			  	  onRuns[i](e);
-          }
-        case 'close':
-          if (playAction === 'close' && i) {
-			  	  onCloses[i](e);
-            break;
-          }
-        case 'kill':
-          if (playAction === 'kill' && i) {
-			  	  onKills[i](e);
-            break;
-          }
+    case 'close':
+      if (playAction === 'close') {
+	  	  onCloses[i](e);
+        break;
       }
-
-			if (playAction && playAction.includes("run2")) {
-				onRun2s[i](e);
-			}
-
-			if (e.key === 'playCode') {
-			  var playCode = localStorage.getItem("playCode");
-				var c = play[i];
-				c.innerHTML = playCode;
-			}
-
-      if (e.key === 'width') {
-        var outputs = document.querySelectorAll('.output');
-        outputs[i].style.width = localStorage.getItem('width');
-        outputs[i].style.height = localStorage.getItem('height');
-        outputs[i].style.top = localStorage.getItem('top');
-        outputs[i].style.left = localStorage.getItem('left');
-        outputs[i].style.right = localStorage.getItem('right');
-        outputs[i].style.bottom = localStorage.getItem('bottom');
-        outputs[i].style.maxHeight = '608px'; 
+    case 'kill':
+      if (playAction === 'kill') {
+	  	  onKills[i](e);
+        break;
       }
-		}
+  }
 
+	if (playAction && playAction.includes("run2")) {
+		onRun2s[i](e);
 	}
+
+	var plays = document.querySelectorAll('div.playground');
+	if (e.key === 'playCode') {
+	  var playCode = localStorage.getItem("playCode");
+		var c = plays[i];
+		c.innerHTML = playCode;
+	}
+
+  if (e.key === 'width') {
+    var outputs = document.querySelectorAll('.output');
+    outputs[i].style.width = localStorage.getItem('width');
+    outputs[i].style.height = localStorage.getItem('height');
+    outputs[i].style.top = localStorage.getItem('top');
+    outputs[i].style.left = localStorage.getItem('left');
+    outputs[i].style.right = localStorage.getItem('right');
+    outputs[i].style.bottom = localStorage.getItem('bottom');
+  }
 }
