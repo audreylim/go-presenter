@@ -407,7 +407,7 @@ function handleBodyKeyDown(event) {
 
   switch (event.keyCode) {
     case 80: // 'N' opens presenter notes window
-      if (presenterEnabled) handleKeyDownN();
+      if (!inCode && presenterEnabled) handleKeyDownN();
       break;
     case 72: // 'H' hides the help text
     case 27: // escape key
