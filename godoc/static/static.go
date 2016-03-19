@@ -2047,9 +2047,6 @@ function initPlayground(transport) {
 		return s.replace("\xA0", " "); // replace non-breaking spaces
 	}
 
-	
-	var onRuns = [];
-
 	function init(code, index) {
 		var output = document.createElement('div');
 		var outpre = document.createElement('pre');
@@ -2067,94 +2064,77 @@ function initPlayground(transport) {
 
 		$(output).bind('resize', function(event) {
 			if ($(event.target).hasClass('ui-resizable')) {
-				var width = $(output).css('width');
-				var height = $(output).css('height');
-				var right = $(output).css('right');
-				var bottom = $(output).css('bottom');
-				var top = $(output).css('top');
-				var left = $(output).css('left');
-				localStorage.setItem("width", width);
-				localStorage.setItem("height", height);
-				localStorage.setItem("right", right);
-				localStorage.setItem("bottom", bottom);
-				localStorage.setItem("top", top);
-				localStorage.setItem("left", left);
+				localStorage.setItem("width", output.style.width);
+				localStorage.setItem("height", output.style.height);
+				localStorage.setItem("right", output.style.right);
+				localStorage.setItem("bottom", output.style.bottom);
+				localStorage.setItem("top", output.style.top);
+				localStorage.setItem("left", output.style.left);
 			}
 		})
 
 		function onKill() {
 			if (running) running.Kill();
 			if (presenterEnabled) {
-				localStorage.setItem("play", "kill");
+				localStorage.setItem("index", index);
+				localStorage.setItem("playAction", "kill");
 			}
 		}
 
-		function onkill() {
-			if (running) running.Kill();
-		}
-
 		function onRun(e) {
-			onkill();
+			var sk = e.shiftKey || localStorage.getItem("shiftKey") === "true";
+			if (running) running.Kill();
 			output.style.display = "block";
 			outpre.innerHTML = "";
 			run1.style.display = "none";
-			var options = {Race: e.shiftKey};
+			var options = {Race: sk};
 			running = transport.Run(text(code), PlaygroundOutput(outpre), options);
 			if (presenterEnabled) {
-				localStorage.setItem("play", "run");
 				localStorage.setItem("index", index);
+				if (localStorage.getItem("playAction") === "run") {
+				  localStorage.removeItem("playAction");
+				} else {
+				  localStorage.setItem("playAction", "run");
+				}
+
+				if (e.shiftKey) {
+				  localStorage.setItem("shiftKey", e.shiftKey);
+				} else if (localStorage.getItem("shiftKey") === "true") {
+				  localStorage.removeItem("shiftKey");
+				}
+			}
+		}
+
+		function onClose() {
+			if (running) running.Kill();
+			output.style.display = "none";
+			run1.style.display = "inline-block";
+			if (presenterEnabled) {
+				localStorage.setItem("index", index);
+				localStorage.setItem("playAction", "close");
 			}
 		}
 
 		onRuns.push(onRun);
+		onCloses.push(onClose);
+		onKills.push(onKill);
 
-		function onClose() {
-			onkill();
-			output.style.display = "none";
-			run1.style.display = "inline-block";
-			if (presenterEnabled) {
-				localStorage.setItem("play", "close");
-			}
+		code.addEventListener("input", inputHandler, false);
+
+		function inputHandler(e) {
+			localStorage.setItem("playCode", e.target.innerHTML);
+			localStorage.setItem("index", index);
 		}
 
-		if (presenterEnabled) {
-			console.log("the code is ", code)
-			window.addEventListener("storage", storageEvtHandler, false);
-
-			function storageEvtHandler(e) {
-				var play = localStorage.getItem("play");
-				switch (play) {
-					case "run":
-						var index  = localStorage.getItem("index");
-						onRuns[index](e);
-						break;
-					case "close":
-						onClose();
-						break;
-					case "kill":
-						onKill();
-						break;
-				}
-				var width = localStorage.getItem("width");
-				var height = localStorage.getItem("height");
-				var top = localStorage.getItem("top");
-				var left = localStorage.getItem("left");
-				var right = localStorage.getItem("right");
-				var bottom = localStorage.getItem("bottom");
-				$(output).css('width', width);
-				$(output).css('height', height);
-				$(output).css('top', top);
-				$(output).css('left', left);
-				$(output).css('right', right);
-				$(output).css('bottom', bottom);
-				$(output).css('max-height', '608px');
-
-			}
+		var playCode = localStorage.getItem("playCode");
+		if (playCode) {
+			var c = code;
+			c.innerHTML = playCode;
 		}
 
 		var run1 = document.createElement('button');
 		run1.innerHTML = 'Run';
-		run1.className = 'run';
+		run1.classList.add('run', index);
 		run1.addEventListener("click", onRun, false);
 		var run2 = document.createElement('button');
 		run2.className = 'run';
@@ -2192,9 +2172,54 @@ function initPlayground(transport) {
 	for (var i = 0; i < play.length; i++) {
 		init(play[i], i);
 	}
-	console.log("onRuns: ", onRuns);
 }
 
+var onRuns = [];
+var onCloses = [];
+var onKills = [];
+
+function syncPlay(e) {
+	var playAction = localStorage.getItem("playAction");
+	var i = localStorage.getItem("index");
+
+	switch (playAction) {
+		case 'run':
+		if (playAction === 'run' && e.key === 'playAction') {
+			onRuns[i](e);
+			break;
+		} else if (e.key === 'index' && e.oldValue) {
+			onRuns[i](e);
+			break;
+		}
+		case 'close':
+		if (playAction === 'close') {
+			onCloses[i](e);
+		break;
+		}
+		case 'kill':
+		if (playAction === 'kill') {
+			onKills[i](e);
+			break;
+		}
+	}
+
+	if (e.key === 'playCode') {
+	  var plays = document.querySelectorAll('div.playground');
+	  var playCode = localStorage.getItem("playCode");
+		var c = plays[i];
+		c.innerHTML = playCode;
+	}
+
+  if (e.key === 'width') {
+    var outputs = document.querySelectorAll('.output');
+    outputs[i].style.width = localStorage.getItem('width');
+    outputs[i].style.height = localStorage.getItem('height');
+    outputs[i].style.top = localStorage.getItem('top');
+    outputs[i].style.left = localStorage.getItem('left');
+    outputs[i].style.right = localStorage.getItem('right');
+    outputs[i].style.bottom = localStorage.getItem('bottom');
+  }
+}
 `,
 
 	"playground.js": `// Copyright 2012 The Go Authors. All rights reserved.

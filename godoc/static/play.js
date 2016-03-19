@@ -60,33 +60,26 @@ function initPlayground(transport) {
 		}
 
 		function onRun(e) {
-			console.log("e", e);
-			console.log("e", e.srcElement.attributes);
+			var sk = e.shiftKey || localStorage.getItem("shiftKey") === "true";
 			if (running) running.Kill();
 			output.style.display = "block";
 			outpre.innerHTML = "";
 			run1.style.display = "none";
-			var options = {Race: e.shiftKey};
+			var options = {Race: sk};
 			running = transport.Run(text(code), PlaygroundOutput(outpre), options);
 			if (presenterEnabled) {
 				localStorage.setItem("index", index);
-				localStorage.setItem("playAction", "run");
-			}
-		}
+				if (localStorage.getItem("playAction") === "run") {
+				  localStorage.removeItem("playAction");
+				} else {
+				  localStorage.setItem("playAction", "run");
+				}
 
-		var runNum = 0;
-
-		function onRun2(e) {
-			if (running) running.Kill();
-			output.style.display = "block";
-			outpre.innerHTML = "";
-			run1.style.display = "none";
-			var options = {Race: e.shiftKey};
-			running = transport.Run(text(code), PlaygroundOutput(outpre), options);
-			if (presenterEnabled) {
-				runNum += 1;
-				localStorage.setItem("index", index);
-				localStorage.setItem("playAction", "run2" + runNum);
+				if (e.shiftKey) {
+				  localStorage.setItem("shiftKey", e.shiftKey);
+				} else if (localStorage.getItem("shiftKey") === "true") {
+				  localStorage.removeItem("shiftKey");
+				}
 			}
 		}
 
@@ -101,7 +94,6 @@ function initPlayground(transport) {
 		}
 
 		onRuns.push(onRun);
-		onRun2s.push(onRun2);
 		onCloses.push(onClose);
 		onKills.push(onKill);
 
@@ -125,7 +117,7 @@ function initPlayground(transport) {
 		var run2 = document.createElement('button');
 		run2.className = 'run';
 		run2.innerHTML = 'Run';
-		run2.addEventListener("click", onRun2, false);
+		run2.addEventListener("click", onRun, false);
 		var kill = document.createElement('button');
 		kill.className = 'kill';
 		kill.innerHTML = 'Kill';
@@ -161,7 +153,6 @@ function initPlayground(transport) {
 }
 
 var onRuns = [];
-var onRun2s = [];
 var onCloses = [];
 var onKills = [];
 
@@ -169,28 +160,25 @@ function syncPlay(e) {
 	var playAction = localStorage.getItem("playAction");
 	var i = localStorage.getItem("index");
 
-  switch (playAction) {
-    case 'run':
-      if (playAction === 'run' && e.key === 'playAction') {
-	  	  onRuns[i](e);
-        break;
-      } else if (e.key === 'index' && e.oldValue) {
-	  	  onRuns[i](e);
-      }
-    case 'close':
-      if (playAction === 'close') {
-	  	  onCloses[i](e);
-        break;
-      }
-    case 'kill':
-      if (playAction === 'kill') {
-	  	  onKills[i](e);
-        break;
-      }
-  }
-
-	if (playAction && playAction.includes("run2")) {
-		onRun2s[i](e);
+	switch (playAction) {
+		case 'run':
+		if (playAction === 'run' && e.key === 'playAction') {
+			onRuns[i](e);
+			break;
+		} else if (e.key === 'index' && e.oldValue) {
+			onRuns[i](e);
+			break;
+		}
+		case 'close':
+		if (playAction === 'close') {
+			onCloses[i](e);
+		break;
+		}
+		case 'kill':
+		if (playAction === 'kill') {
+			onKills[i](e);
+			break;
+		}
 	}
 
 	if (e.key === 'playCode') {
