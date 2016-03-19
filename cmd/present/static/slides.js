@@ -406,6 +406,9 @@ function handleBodyKeyDown(event) {
   var inCode = event.target.classList.contains("code");
 
   switch (event.keyCode) {
+    case 80: // 'N' opens presenter notes window
+      if (!inCode && presenterEnabled) handleKeyDownN();
+      break;
     case 72: // 'H' hides the help text
     case 27: // escape key
       if (!inCode) hideHelpText();
@@ -513,18 +516,22 @@ function initialize() {
   }
 
   if (presenterEnabled) {
-    window.addEventListener('storage', storageEventHandler, false);
+    window.addEventListener('storage', handleStorageUpdated, false);
     localStorage.setItem("destSlide", curSlide);
   }
 }
 
-function storageEventHandler(evt) {
+function handleStorageUpdated(e) {
   var destSlide = localStorage.getItem("destSlide");
   if (destSlide > curSlide) {
     nextSlide();
   } else if (destSlide < curSlide) {
     prevSlide();
   }
+
+  syncPlay(e);
+
+  updateNotes();
 }
 
 // If ?debug exists then load the script relative instead of absolute

@@ -24,6 +24,7 @@ $ go install golang.org/x/tools/cmd/present
 
 - Dual screen
 - Syncs both ways
+- Playground synced
 - Sneak preview of previous and next slide on Presenter
 - Enabling of Presenter mode keeps Presenter features and actions separate from the original `present` app, ie. it will not interfere with `present` if not enabled
 
@@ -65,11 +66,11 @@ You can close Presenter from the main window by pressing `P` again, as long as y
 
 Control your slides from either Presenter or the main browser window. The same commands (eg. clicks, arrows, enter keys) that apply to the main browser window apply to Presenter. It syncs both ways.
 
-## What Presenter Does Not Do
+### Playground Synced
 
-Presenter currently does not sync `.play` actions like `Run`. There's a bit more complexity in enabling that, but this might be added in future.
+If you have `.play` code, `Run`, `Kill` and `Close` buttons are completely synced. Code edits within the code block is also synced.
 
-Eg. Clicking `Run` from the main browser or Presenter will not sync with the other window.
+Eg. Clicking `Run` from the main browser or Presenter will sync with the other window.
 
 <img width="671" alt="screen shot 2016-03-06 at 8 23 53 pm" src="https://cloud.githubusercontent.com/assets/4488777/13560852/7e3ed6ae-e3d9-11e5-946c-8202bf3a0593.png">
 

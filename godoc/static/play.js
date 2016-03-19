@@ -25,7 +25,7 @@ function initPlayground(transport) {
 		return s.replace("\xA0", " "); // replace non-breaking spaces
 	}
 
-	function init(code) {
+	function init(code, index) {
 		var output = document.createElement('div');
 		var outpre = document.createElement('pre');
 		var running;
@@ -40,28 +40,79 @@ function initPlayground(transport) {
 			});
 		}
 
+		$(output).bind('resize', function(event) {
+			if ($(event.target).hasClass('ui-resizable')) {
+				localStorage.setItem("width", output.style.width);
+				localStorage.setItem("height", output.style.height);
+				localStorage.setItem("right", output.style.right);
+				localStorage.setItem("bottom", output.style.bottom);
+				localStorage.setItem("top", output.style.top);
+				localStorage.setItem("left", output.style.left);
+			}
+		})
+
 		function onKill() {
 			if (running) running.Kill();
+			if (presenterEnabled) {
+				localStorage.setItem("index", index);
+				localStorage.setItem("playAction", "kill");
+			}
 		}
 
 		function onRun(e) {
-			onKill();
+			var sk = e.shiftKey || localStorage.getItem("shiftKey") === "true";
+			if (running) running.Kill();
 			output.style.display = "block";
 			outpre.innerHTML = "";
 			run1.style.display = "none";
-			var options = {Race: e.shiftKey};
+			var options = {Race: sk};
 			running = transport.Run(text(code), PlaygroundOutput(outpre), options);
+			if (presenterEnabled) {
+				localStorage.setItem("index", index);
+				if (localStorage.getItem("playAction") === "run") {
+				  localStorage.removeItem("playAction");
+				} else {
+				  localStorage.setItem("playAction", "run");
+				}
+
+				if (e.shiftKey) {
+				  localStorage.setItem("shiftKey", e.shiftKey);
+				} else if (localStorage.getItem("shiftKey") === "true") {
+				  localStorage.removeItem("shiftKey");
+				}
+			}
 		}
 
 		function onClose() {
-			onKill();
+			if (running) running.Kill();
 			output.style.display = "none";
 			run1.style.display = "inline-block";
+			if (presenterEnabled) {
+				localStorage.setItem("index", index);
+				localStorage.setItem("playAction", "close");
+			}
+		}
+
+		onRuns.push(onRun);
+		onCloses.push(onClose);
+		onKills.push(onKill);
+
+		code.addEventListener("input", inputHandler, false);
+
+		function inputHandler(e) {
+			localStorage.setItem("playCode", e.target.innerHTML);
+			localStorage.setItem("index", index);
+		}
+
+		var playCode = localStorage.getItem("playCode");
+		if (playCode) {
+			var c = code;
+			c.innerHTML = playCode;
 		}
 
 		var run1 = document.createElement('button');
 		run1.innerHTML = 'Run';
-		run1.className = 'run';
+		run1.classList.add('run', index);
 		run1.addEventListener("click", onRun, false);
 		var run2 = document.createElement('button');
 		run2.className = 'run';
@@ -97,7 +148,53 @@ function initPlayground(transport) {
 
 	var play = document.querySelectorAll('div.playground');
 	for (var i = 0; i < play.length; i++) {
-		init(play[i]);
+		init(play[i], i);
 	}
 }
 
+var onRuns = [];
+var onCloses = [];
+var onKills = [];
+
+function syncPlay(e) {
+	var playAction = localStorage.getItem("playAction");
+	var i = localStorage.getItem("index");
+
+	switch (playAction) {
+		case 'run':
+		if (playAction === 'run' && e.key === 'playAction') {
+			onRuns[i](e);
+			break;
+		} else if (e.key === 'index' && e.oldValue) {
+			onRuns[i](e);
+			break;
+		}
+		case 'close':
+		if (playAction === 'close') {
+			onCloses[i](e);
+		break;
+		}
+		case 'kill':
+		if (playAction === 'kill') {
+			onKills[i](e);
+			break;
+		}
+	}
+
+	if (e.key === 'playCode') {
+	  var plays = document.querySelectorAll('div.playground');
+	  var playCode = localStorage.getItem("playCode");
+		var c = plays[i];
+		c.innerHTML = playCode;
+	}
+
+  if (e.key === 'width') {
+    var outputs = document.querySelectorAll('.output');
+    outputs[i].style.width = localStorage.getItem('width');
+    outputs[i].style.height = localStorage.getItem('height');
+    outputs[i].style.top = localStorage.getItem('top');
+    outputs[i].style.left = localStorage.getItem('left');
+    outputs[i].style.right = localStorage.getItem('right');
+    outputs[i].style.bottom = localStorage.getItem('bottom');
+  }
+}

@@ -3,12 +3,8 @@ var w = null;
 
 // Apply to main browser window only
 if (window.parent == window) {
-  // Duplicate event listener on parent window in this file listens specifically
-  // for open Presenter command
-  document.addEventListener('keydown', handleKeyDownForPresenter, false);
-
   window.onbeforeunload = function() {
-    localStorage.removeItem("destSlide");
+    localStorage.clear();
     if (w) {
       w.close();
     }
@@ -17,9 +13,8 @@ if (window.parent == window) {
   }
 };
 
-function handleKeyDownForPresenter(event) {
-  // 'P' opens presenter window
-  if (event.keyCode == 80) {
+function handleKeyDownN(event) {
+  if (window.parent == window) {
     if (w) {
       w.close();
       w = null;
@@ -63,9 +58,6 @@ function renderLayout() {
   w.document.getElementById('p-iframe').focus();
   w.document.write(notesHTML);
 
-  // Storage event listener is added here solely to update notes on presenter
-  w.addEventListener('storage', storageEventHandler, false);
-
   w.document.close();
 };
 
@@ -79,7 +71,7 @@ function formatNotes(notes) {
   return formattedNotes;
 };
 
-function storageEventHandler(evt) {
+function updateNotes() {
   destSlide = parseInt(localStorage.getItem("destSlide"));
   s = sections[destSlide - 1];
   var el = w.document.getElementById('p-notes');
