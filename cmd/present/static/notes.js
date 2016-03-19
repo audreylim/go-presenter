@@ -21,7 +21,7 @@ function handleKeyDownN(event) {
       return;
     }
 
-    w = window.open('', '', 'width=600,height=640,scrollbars=yes');
+    w = window.open('', '', 'width=883,height=650,scrollbars=no,resizable=1');
     renderLayout();
   }
 };
@@ -32,9 +32,9 @@ function renderLayout() {
   var slidesUrl = window.location.href;
   var slidesIframeHTML = "<iframe id='p-iframe'"
                        + " style='display:block;"
-                         + "margin-top:-242px;"
-                         + "transform:scale(0.4, 0.4);"
-                         + "margin-left:-460px;'"
+                         + "margin-top:-146px;"
+                         + "transform:scale(0.65, 0.65);"
+                         + "margin-left:-321px;'"
                        + " scrolling='no'"
                        + " width=1500 height=768"
                        + " src='" + slidesUrl + "'>"
@@ -47,8 +47,13 @@ function renderLayout() {
     notes = formatNotes(s.Notes);
   }
   var notesHTML = "<div id='p-notes'"
-                + "style='margin-top:-210px;"
-                  + "font-family:arial'>"
+                + "style='margin-top:-136px;"
+                  + "font-family:arial;"
+                  + "font-size:16px;"
+                  + "height:30%;"
+                  + "overflow:scroll;"
+                  + "position:fixed;"
+				  + "'>"
                 + notes
                 + "</div>";
 

@@ -211,9 +211,7 @@ function prevSlide() {
 
     updateSlides();
 
-    if (notesEnabled) {
-      localStorage.setItem("destSlide", curSlide);
-    }
+    if (notesEnabled) localStorage.setItem("destSlide", curSlide);
   }
 };
 
@@ -224,9 +222,7 @@ function nextSlide() {
 
     updateSlides();
 
-    if (notesEnabled) {
-      localStorage.setItem("destSlide", curSlide);
-    }
+    if (notesEnabled) localStorage.setItem("destSlide", curSlide);
   }
 };
 
