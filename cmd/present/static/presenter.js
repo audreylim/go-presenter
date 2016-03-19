@@ -4,16 +4,7 @@ var w = null;
 // Apply to main browser window only
 if (window.parent == window) {
   window.onbeforeunload = function() {
-    localStorage.removeItem("destSlide");
-    localStorage.removeItem("playAction");
-    localStorage.removeItem("width");
-    localStorage.removeItem("height");
-    localStorage.removeItem("right");
-    localStorage.removeItem("bottom");
-    localStorage.removeItem("top");
-    localStorage.removeItem("left");
-    localStorage.removeItem("index");
-    localStorage.removeItem("playCode");
+    localStorage.clear();
     if (w) {
       w.close();
     }

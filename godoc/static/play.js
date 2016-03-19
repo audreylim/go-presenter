@@ -26,8 +26,6 @@ function initPlayground(transport) {
 	}
 
 	function init(code, index) {
-    code.id = index;
-
 		var output = document.createElement('div');
 		var outpre = document.createElement('pre');
 		var running;
@@ -62,6 +60,8 @@ function initPlayground(transport) {
 		}
 
 		function onRun(e) {
+			console.log("e", e);
+			console.log("e", e.srcElement.attributes);
 			if (running) running.Kill();
 			output.style.display = "block";
 			outpre.innerHTML = "";
@@ -120,7 +120,7 @@ function initPlayground(transport) {
 
 		var run1 = document.createElement('button');
 		run1.innerHTML = 'Run';
-		run1.className = 'run';
+		run1.classList.add('run', index);
 		run1.addEventListener("click", onRun, false);
 		var run2 = document.createElement('button');
 		run2.className = 'run';
@@ -193,8 +193,8 @@ function syncPlay(e) {
 		onRun2s[i](e);
 	}
 
-	var plays = document.querySelectorAll('div.playground');
 	if (e.key === 'playCode') {
+	  var plays = document.querySelectorAll('div.playground');
 	  var playCode = localStorage.getItem("playCode");
 		var c = plays[i];
 		c.innerHTML = playCode;
