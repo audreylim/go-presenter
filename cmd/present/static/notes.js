@@ -1,7 +1,9 @@
+var PERMANENT_URL_PREFIX = '/static/';
+
 // There will only be one 'w' object at any time
 var w = null;
 
-// Apply to main browser window only
+// If parent window closes, clear storage and close child window
 if (window.parent == window) {
   window.onbeforeunload = function() {
     localStorage.clear();
@@ -14,6 +16,7 @@ if (window.parent == window) {
 };
 
 function handleKeyDownN(event) {
+  // 'N' keydown event should only apply to parent window
   if (window.parent == window) {
     if (w) {
       w.close();
@@ -21,60 +24,57 @@ function handleKeyDownN(event) {
       return;
     }
 
-    w = window.open('', '', 'width=1083,height=655,scrollbars=no,resizable=1');
-    renderLayout();
+    w = window.open('', '', 'width=1000,height=676,scrollbars=no,resizable=1');
+    initialize();
   }
 };
 
-function renderLayout() {
-  var titleHTML = "<head><title>" + title + "</title></head>";
-
+function initialize() {
   var slidesUrl = window.location.href;
-  var slidesIframeHTML = "<iframe id='p-iframe'"
-                       + " style='display:block;"
-                         + "margin-top:-10px;"
-                         + "transform:scale(0.7, 0.7);"
-                         + "transform-origin:top left;"
-                         + "position:relative;"
-                         + "border:0;'"
-                       + " scrolling='no'"
-                       + " width=140% height=95%"
-                       + " min-height=600px"
-                       + " src='" + slidesUrl + "'>"
-                       + "</iframe>";
 
-  curSlide = parseInt(localStorage.getItem("destSlide"));
-  var notes = '';
+  var curSlide = parseInt(localStorage.getItem("destSlide"));
+  var formattedNotes = '';
   var s = sections[curSlide - 1];
   if (s) {
-    notes = formatNotes(s.Notes);
+    formattedNotes = formatNotes(s.Notes);
   }
-  var notesHTML = "<div id='p-notes'"
-                + "style='margin-top:-180px;"
-                  + "font-family:arial;"
-                  + "font-size:16px;"
-                  + "height:30%;"
-                  + "width:100%;"
-                  + "overflow:scroll;"
-                  + "position:fixed;"
-				  + "'>"
-                + notes
-                + "</div>";
 
-  w.document.write(titleHTML);
-  w.document.write(slidesIframeHTML);
-  // Enable navigation from presenter window immediately
-  w.document.getElementById('p-iframe').focus();
-  w.document.write(notesHTML);
+  // Hack to apply css styling
+  w.document.write("<div style='display:none;'></div>");
 
-  w.document.close();
+  w.document.title = title;
+
+  var slides = w.document.createElement('iframe');
+  slides.id = 'presenter-slides';
+  slides.scrolling = 'no';
+  slides.width = '146%';
+  slides.height = '750px';
+  slides.src = slidesUrl;
+  w.document.body.appendChild(slides);
+  slides.focus();
+
+  var notes = w.document.createElement('div');
+  notes.id = 'presenter-notes';
+  notes.innerHTML = formattedNotes;
+  w.document.body.appendChild(notes);
+
+  addPresenterNotesStyle();
 };
+
+function addPresenterNotesStyle() {
+  var el = w.document.createElement('link');
+  el.rel = 'stylesheet';
+  el.type = 'text/css';
+  el.href = PERMANENT_URL_PREFIX + 'notes.css';
+  w.document.body.appendChild(el);
+  w.document.querySelector('head').appendChild(el);
+}
 
 function formatNotes(notes) {
   var formattedNotes = '';
   if (notes) {
     for (var i = 0; i < notes.length; i++) {
-      formattedNotes = formattedNotes + "<p>" + notes[i] + "</p>";
+      formattedNotes = formattedNotes + '<p>' + notes[i] + '</p>';
     }
   }
   return formattedNotes;
@@ -83,7 +83,7 @@ function formatNotes(notes) {
 function updateNotes() {
   destSlide = parseInt(localStorage.getItem("destSlide"));
   s = sections[destSlide - 1];
-  var el = w.document.getElementById('p-notes');
+  var el = w.document.getElementById('presenter-notes');
 
   if (s.Notes) {
     if (el) {

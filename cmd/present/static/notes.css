@@ -1,0 +1,23 @@
+p {
+  margin: 10px;
+}
+
+#presenter-slides {
+  display: block;
+  margin-top: -10px;
+  margin-left: -17px;
+  transform: scale(0.7, 0.7);
+  transform-origin: top left;
+  position: fixed;
+  border: 0;
+}
+
+#presenter-notes {
+  margin-top: -180px;
+  font-family: 'Open Sans', Arial, sans-serif;
+  height: 30%;
+  width: 100%;
+  overflow: scroll;
+  position: fixed;
+  top: 706px;
+}
