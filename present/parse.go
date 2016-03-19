@@ -342,7 +342,7 @@ func parseSections(ctx *Context, name string, lines *Lines, number []int, doc *D
 				}
 				lines.back()
 				e = List{Bullet: b}
-			case strings.HasPrefix(text, "& "):
+			case strings.HasPrefix(text, ": "):
 				nt = text[2:]
 			case strings.HasPrefix(text, prefix+"* "):
 				lines.back()
