@@ -53,7 +53,7 @@ function initPlayground(transport) {
 
 		function onKill() {
 			if (running) running.Kill();
-			if (presenterEnabled) {
+			if (notesEnabled) {
 				localStorage.setItem("index", index);
 				localStorage.setItem("playAction", "kill");
 			}
@@ -67,7 +67,7 @@ function initPlayground(transport) {
 			run1.style.display = "none";
 			var options = {Race: sk};
 			running = transport.Run(text(code), PlaygroundOutput(outpre), options);
-			if (presenterEnabled) {
+			if (notesEnabled) {
 				localStorage.setItem("index", index);
 				if (localStorage.getItem("playAction") === "run") {
 				  localStorage.removeItem("playAction");
@@ -87,7 +87,7 @@ function initPlayground(transport) {
 			if (running) running.Kill();
 			output.style.display = "none";
 			run1.style.display = "inline-block";
-			if (presenterEnabled) {
+			if (notesEnabled) {
 				localStorage.setItem("index", index);
 				localStorage.setItem("playAction", "close");
 			}

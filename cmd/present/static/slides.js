@@ -211,7 +211,7 @@ function prevSlide() {
 
     updateSlides();
 
-    if (presenterEnabled) {
+    if (notesEnabled) {
       localStorage.setItem("destSlide", curSlide);
     }
   }
@@ -224,7 +224,7 @@ function nextSlide() {
 
     updateSlides();
 
-    if (presenterEnabled) {
+    if (notesEnabled) {
       localStorage.setItem("destSlide", curSlide);
     }
   }
@@ -406,8 +406,8 @@ function handleBodyKeyDown(event) {
   var inCode = event.target.classList.contains("code");
 
   switch (event.keyCode) {
-    case 80: // 'N' opens presenter notes window
-      if (!inCode && presenterEnabled) handleKeyDownN();
+    case 78: // 'N' opens notes window
+      if (!inCode && notesEnabled) handleKeyDownN();
       break;
     case 72: // 'H' hides the help text
     case 27: // escape key
@@ -515,7 +515,7 @@ function initialize() {
     document.addEventListener('DOMContentLoaded', handleDomLoaded, false);
   }
 
-  if (presenterEnabled) {
+  if (notesEnabled) {
     window.addEventListener('storage', handleStorageUpdated, false);
     localStorage.setItem("destSlide", curSlide);
   }

@@ -8,16 +8,16 @@
     <meta charset='utf-8'>
 
     <script>
-      var presenterEnabled = {{.PresenterEnabled}};
+      var notesEnabled = {{.NotesEnabled}};
     </script>
     <script src='/static/slides.js'></script>
 
-    {{if .PresenterEnabled}}
+    {{if .NotesEnabled}}
     <script>
       var sections = {{.Sections}};
       var title = {{.Title}};
     </script>
-    <script src='/static/presenter.js'></script>
+    <script src='/static/notes.js'></script>
     {{end}}
 
     <script>
@@ -86,7 +86,7 @@
 
     {{if .PlayEnabled}}
     <script>
-      var presenterEnabled = {{.PresenterEnabled}};
+      var notesEnabled = {{.NotesEnabled}};
     </script>
     <script src='/play.js'></script>
     {{end}}

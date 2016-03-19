@@ -1,4 +1,4 @@
-// There will only be one 'w' (Presenter) object at any time
+// There will only be one 'w' object at any time
 var w = null;
 
 // Apply to main browser window only
