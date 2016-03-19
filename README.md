@@ -68,7 +68,7 @@ Control your slides from either Presenter or the main browser window. The same c
 
 ### Playground Synced
 
-If you have `.play` code, `Run`, `Kill` and `Close` buttons are completely synced. Code edits within the code block is also synced.
+If you have `.play` code, `Run`, `Kill` and `Close` buttons are completely synced. Code edits within the code block are also synced.
 
 Eg. Clicking `Run` from the main browser or Presenter will sync with the other window.
 
