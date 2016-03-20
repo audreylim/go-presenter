@@ -525,7 +525,7 @@ function handleStorageUpdated(e) {
     prevSlide();
   }
 
-  syncPlay(e);
+  updatePlay(e);
 
   updateNotes();
 }
