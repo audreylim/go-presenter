@@ -6,10 +6,17 @@ p {
   display: block;
   margin-top: -10px;
   margin-left: -17px;
-  transform: scale(0.7, 0.7);
-  transform-origin: top left;
   position: fixed;
   border: 0;
+
+  transform: scale(0.7, 0.7);
+  transform-origin: top left;
+  -moz-transform: scale(0.7);
+  -moz-transform-origin: top left;
+  -o-transform: scale(0.7);
+  -o-transform-origin: top left;
+  -webkit-transform: scale(0.7);
+  -webkit-transform-origin: top left;
 }
 
 #presenter-notes {
