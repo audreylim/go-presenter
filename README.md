@@ -10,11 +10,11 @@ Presenter builds on top of the [go present tool](https://github.com/golang/tools
 
 Default:
 
-<img width="1280" alt="screen shot 2016-03-20 at 7 08 03 pm" src="https://cloud.githubusercontent.com/assets/4488777/13909380/1ec85ba4-eecf-11e5-98ba-7180bc79da9a.png">
+<img width="1280" alt="screen shot 2016-03-20 at 7 30 52 pm" src="https://cloud.githubusercontent.com/assets/4488777/13909551/8d846e7c-eed2-11e5-9581-bfc2fa5a38df.png">
 
 Fullscreen:
 
-<img width="1280" alt="screen shot 2016-03-20 at 7 04 37 pm" src="https://cloud.githubusercontent.com/assets/4488777/13909483/6d1ff42c-eed1-11e5-9843-72d75e28f1ef.png">
+<img width="1280" alt="screen shot 2016-03-20 at 7 32 14 pm" src="https://cloud.githubusercontent.com/assets/4488777/13909547/87874daa-eed2-11e5-8851-7d458c67b225.png">
 
 ## Install
 
