@@ -6,7 +6,16 @@ Presenter builds on top of the [go present tool](https://github.com/golang/tools
 
 Video: http://virtivia.com:27080/1vs4fiwjm924q.mov
 
-Screenshot: <img width="1207" alt="screen shot 2016-03-04 at 9 42 11 pm" src="https://cloud.githubusercontent.com/assets/4488777/13545940/0d5780cc-e252-11e5-88d4-4bb9c70fc9a4.png">
+**Screenshot**
+
+Default:
+
+<img width="1280" alt="screen shot 2016-03-20 at 7 08 03 pm" src="https://cloud.githubusercontent.com/assets/4488777/13909380/1ec85ba4-eecf-11e5-98ba-7180bc79da9a.png">
+
+Fullscreen:
+
+<img width="671" alt="screen shot 2016-03-06 at 8 23 53 pm" src="https://cloud.githubusercontent.com/assets/4488777/13560852/7e3ed6ae-e3d9-11e5-946c-8202bf3a0593.png">
+
 
 ## Install
 
@@ -28,15 +37,17 @@ $ go install golang.org/x/tools/cmd/present
 - Sneak preview of previous and next slide on Presenter
 - Enabling of Presenter mode keeps Presenter features and actions separate from the original `present` app, ie. it will not interfere with `present` if not enabled
 
-## Supported Browsers
+# Cross Browser Support
 
 - Chrome
+- Firefox
+- Safari
 
 ## How to Use
 
 ### Syntax
 
-Notes are identified by prefixing the paragraph with `& `. Eg.
+Notes are identified by prefixing the paragraph with `: `. Eg.
 
 ```
 // example.slide
@@ -45,22 +56,22 @@ Notes are identified by prefixing the paragraph with `& `. Eg.
 
 - Some bullet points
 
-& This is a Presenter note that does not appear on the main window.
+: This is a Presenter note that does not appear on the main window.
 
-& This is a second paragraph.
+: This is a second paragraph.
 ```
 
 ### Presenter Mode
 
-Run `present` in presenter mode by appending the `-p` flag.
+Run `present` in presenter mode by appending the `-notes` flag.
 
 ```
-$ present -p
+$ present -notes
 ```
 
-This will enable all the Presenter features. For example, to open Presenter, press `P` from your main browser window.
+This will enable all the Presenter features. For example, to open Presenter, press `N` from your main browser window.
 
-You can close Presenter from the main window by pressing `P` again, as long as you toggle from the main browser. If you close the main window, Presenter automatically closes.
+You can close Presenter from the main window by pressing `N` again, as long as you toggle from the main browser. If you close the main window, Presenter automatically closes.
 
 ### Flexible Control Windows
 
