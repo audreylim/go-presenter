@@ -96,14 +96,16 @@ function initPlayground(transport) {
 			}
 		}
 
-		onRunHandlers.push(onRun);
-		onCloseHandlers.push(onClose);
-		onKillHandlers.push(onKill);
+		if (notesEnabled) {
+			onRunHandlers.push(onRun);
+			onCloseHandlers.push(onClose);
+			onKillHandlers.push(onKill);
 
-		code.addEventListener("input", inputHandler, false);
-		function inputHandler(e) {
-			localStorage.setItem("code", e.target.innerHTML);
-			localStorage.setItem("index", index);
+			code.addEventListener("input", inputHandler, false);
+			function inputHandler(e) {
+				localStorage.setItem("code", e.target.innerHTML);
+				localStorage.setItem("index", index);
+			}
 		}
 
 		var run1 = document.createElement('button');
