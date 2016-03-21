@@ -36,7 +36,7 @@ $ go install golang.org/x/tools/cmd/present
 - Sneak preview of previous and next slide on Presenter
 - Enabling of Presenter mode keeps Presenter features and actions separate from the original `present` app, ie. it will not interfere with `present` if not enabled
 
-# Cross Browser Support
+## Cross Browser Support
 
 - Chrome
 - Firefox
