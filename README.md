@@ -4,7 +4,7 @@ Presenter builds on top of the [go present tool](https://github.com/golang/tools
 
 ## Demo
 
-Video: http://virtivia.com:27080/1vs4fiwjm924q.mov
+**Video**: http://virtivia.com:27080/1vs4fiwjm924q.mov
 
 **Screenshot**
 
@@ -14,8 +14,7 @@ Default:
 
 Fullscreen:
 
-<img width="671" alt="screen shot 2016-03-06 at 8 23 53 pm" src="https://cloud.githubusercontent.com/assets/4488777/13560852/7e3ed6ae-e3d9-11e5-946c-8202bf3a0593.png">
-
+<img width="1280" alt="screen shot 2016-03-20 at 7 04 37 pm" src="https://cloud.githubusercontent.com/assets/4488777/13909483/6d1ff42c-eed1-11e5-9843-72d75e28f1ef.png">
 
 ## Install
 
