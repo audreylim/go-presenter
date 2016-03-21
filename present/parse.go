@@ -35,10 +35,10 @@ func Template() *template.Template {
 func (d *Doc) Render(w io.Writer, t *template.Template) error {
 	data := struct {
 		*Doc
-		Template         *template.Template
-		PlayEnabled      bool
-		PresenterEnabled bool
-	}{d, t, PlayEnabled, PresenterEnabled}
+		Template     *template.Template
+		PlayEnabled  bool
+		NotesEnabled bool
+	}{d, t, PlayEnabled, NotesEnabled}
 	return t.ExecuteTemplate(w, "root", data)
 }
 
@@ -46,10 +46,10 @@ func (d *Doc) Render(w io.Writer, t *template.Template) error {
 func (s *Section) Render(w io.Writer, t *template.Template) error {
 	data := struct {
 		*Section
-		Template         *template.Template
-		PlayEnabled      bool
-		PresenterEnabled bool
-	}{s, t, PlayEnabled, PresenterEnabled}
+		Template     *template.Template
+		PlayEnabled  bool
+		NotesEnabled bool
+	}{s, t, PlayEnabled, NotesEnabled}
 	return t.ExecuteTemplate(w, "section", data)
 }
 
@@ -342,7 +342,7 @@ func parseSections(ctx *Context, name string, lines *Lines, number []int, doc *D
 				}
 				lines.back()
 				e = List{Bullet: b}
-			case strings.HasPrefix(text, "& "):
+			case strings.HasPrefix(text, ": "):
 				nt = text[2:]
 			case strings.HasPrefix(text, prefix+"* "):
 				lines.back()

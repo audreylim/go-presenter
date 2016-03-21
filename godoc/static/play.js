@@ -42,44 +42,47 @@ function initPlayground(transport) {
 
 		$(output).bind('resize', function(event) {
 			if ($(event.target).hasClass('ui-resizable')) {
-				localStorage.setItem("width", output.style.width);
-				localStorage.setItem("height", output.style.height);
-				localStorage.setItem("right", output.style.right);
-				localStorage.setItem("bottom", output.style.bottom);
-				localStorage.setItem("top", output.style.top);
-				localStorage.setItem("left", output.style.left);
+				localStorage.setItem('width', output.style.width);
+				localStorage.setItem('height', output.style.height);
+				localStorage.setItem('top', output.style.top);
+				localStorage.setItem('bottom', output.style.bottom);
+				localStorage.setItem('left', output.style.left);
+				localStorage.setItem('right', output.style.right);
 			}
 		})
 
 		function onKill() {
 			if (running) running.Kill();
-			if (presenterEnabled) {
-				localStorage.setItem("index", index);
-				localStorage.setItem("playAction", "kill");
+			if (notesEnabled) {
+				localStorage.setItem('index', index);
+				localStorage.setItem('play', 'kill');
 			}
 		}
 
 		function onRun(e) {
-			var sk = e.shiftKey || localStorage.getItem("shiftKey") === "true";
+			var sk = e.shiftKey || localStorage.getItem('shiftKey') === 'true';
 			if (running) running.Kill();
 			output.style.display = "block";
 			outpre.innerHTML = "";
 			run1.style.display = "none";
 			var options = {Race: sk};
 			running = transport.Run(text(code), PlaygroundOutput(outpre), options);
-			if (presenterEnabled) {
-				localStorage.setItem("index", index);
-				if (localStorage.getItem("playAction") === "run") {
-				  localStorage.removeItem("playAction");
-				} else {
-				  localStorage.setItem("playAction", "run");
-				}
+			if (notesEnabled) updateRunStorage(index, e);
+		}
 
-				if (e.shiftKey) {
-				  localStorage.setItem("shiftKey", e.shiftKey);
-				} else if (localStorage.getItem("shiftKey") === "true") {
-				  localStorage.removeItem("shiftKey");
-				}
+		function updateRunStorage(index, e) {
+			localStorage.setItem('index', index);
+
+			if (localStorage.getItem('play') === 'run') {
+				localStorage.removeItem('play');
+			} else {
+				localStorage.setItem('play', 'run');
+			}
+
+			if (e.shiftKey) {
+				localStorage.setItem('shiftKey', e.shiftKey);
+			} else if (localStorage.getItem('shiftKey') === 'true') {
+				localStorage.removeItem('shiftKey');
 			}
 		}
 
@@ -87,27 +90,20 @@ function initPlayground(transport) {
 			if (running) running.Kill();
 			output.style.display = "none";
 			run1.style.display = "inline-block";
-			if (presenterEnabled) {
-				localStorage.setItem("index", index);
-				localStorage.setItem("playAction", "close");
+			if (notesEnabled) {
+				localStorage.setItem('index', index);
+				localStorage.setItem('play', 'close');
 			}
 		}
 
-		onRuns.push(onRun);
-		onCloses.push(onClose);
-		onKills.push(onKill);
+		onRunHandlers.push(onRun);
+		onCloseHandlers.push(onClose);
+		onKillHandlers.push(onKill);
 
 		code.addEventListener("input", inputHandler, false);
-
 		function inputHandler(e) {
-			localStorage.setItem("playCode", e.target.innerHTML);
+			localStorage.setItem("code", e.target.innerHTML);
 			localStorage.setItem("index", index);
-		}
-
-		var playCode = localStorage.getItem("playCode");
-		if (playCode) {
-			var c = code;
-			c.innerHTML = playCode;
 		}
 
 		var run1 = document.createElement('button');
@@ -138,8 +134,8 @@ function initPlayground(transport) {
 		buttons.appendChild(run2);
 		buttons.appendChild(kill);
 		buttons.appendChild(close);
-
 		output.classList.add('output');
+
 		output.appendChild(buttons);
 		output.appendChild(outpre);
 		output.style.display = "none";
@@ -152,49 +148,60 @@ function initPlayground(transport) {
 	}
 }
 
-var onRuns = [];
-var onCloses = [];
-var onKills = [];
+var onRunHandlers = [];
+var onCloseHandlers = [];
+var onKillHandlers = [];
 
-function syncPlay(e) {
-	var playAction = localStorage.getItem("playAction");
+var outputs = document.querySelectorAll('.output');
+var plays = document.querySelectorAll('div.playground');
+
+function updatePlay(e) {
+	var play = localStorage.getItem("play");
 	var i = localStorage.getItem("index");
 
-	switch (playAction) {
+	var runCalled = (play === 'run' && e.key === 'play');
+	var anotherRunCalled = (e.key === 'index' && e.oldValue);
+
+	switch (play) {
 		case 'run':
-		if (playAction === 'run' && e.key === 'playAction') {
-			onRuns[i](e);
-			break;
-		} else if (e.key === 'index' && e.oldValue) {
-			onRuns[i](e);
+		if (runCalled || anotherRunCalled) {
+			onRunHandlers[i](e);
 			break;
 		}
 		case 'close':
-		if (playAction === 'close') {
-			onCloses[i](e);
-		break;
-		}
-		case 'kill':
-		if (playAction === 'kill') {
-			onKills[i](e);
+		if (play === 'close') {
+			onCloseHandlers[i](e);
 			break;
 		}
+		case 'kill':
+		if (play === 'kill') {
+			onKillHandlers[i](e);
+			break;
+		}
+		return;
 	}
 
-	if (e.key === 'playCode') {
-	  var plays = document.querySelectorAll('div.playground');
-	  var playCode = localStorage.getItem("playCode");
-		var c = plays[i];
-		c.innerHTML = playCode;
+	switch (e.key) {
+		case 'code':
+			plays[i].innerHTML = localStorage.getItem('code');
+			break;
+		case 'width':
+			outputs[i].style.width = localStorage.getItem('width');
+			break;
+		case 'height':
+			outputs[i].style.height = localStorage.getItem('height');
+			break;
+		case 'top':
+			outputs[i].style.top = localStorage.getItem('top');
+			break;
+		case 'bottom':
+			outputs[i].style.bottom = localStorage.getItem('bottom');
+			break;
+		case 'left':
+			outputs[i].style.left = localStorage.getItem('left');
+			break;
+		case 'right':
+			outputs[i].style.right = localStorage.getItem('right');
+			break;
 	}
-
-  if (e.key === 'width') {
-    var outputs = document.querySelectorAll('.output');
-    outputs[i].style.width = localStorage.getItem('width');
-    outputs[i].style.height = localStorage.getItem('height');
-    outputs[i].style.top = localStorage.getItem('top');
-    outputs[i].style.left = localStorage.getItem('left');
-    outputs[i].style.right = localStorage.getItem('right');
-    outputs[i].style.bottom = localStorage.getItem('bottom');
-  }
 }
