@@ -35,21 +35,23 @@ function initPlayground(transport) {
 				handles: "n,w,nw",
 				minHeight:	27,
 				minWidth:	135,
-				maxHeight: 608,
+				maxHeight: 	608,
 				maxWidth:	990
 			});
 		}
 
-		$(output).bind('resize', function(event) {
-			if ($(event.target).hasClass('ui-resizable')) {
-				localStorage.setItem('width', output.style.width);
-				localStorage.setItem('height', output.style.height);
-				localStorage.setItem('top', output.style.top);
-				localStorage.setItem('bottom', output.style.bottom);
-				localStorage.setItem('left', output.style.left);
-				localStorage.setItem('right', output.style.right);
-			}
-		})
+		if (notesEnabled) {
+			$(output).bind('resize', function(event) {
+				if ($(event.target).hasClass('ui-resizable')) {
+						localStorage.setItem('width', output.style.width);
+						localStorage.setItem('height', output.style.height);
+						localStorage.setItem('top', output.style.top);
+						localStorage.setItem('bottom', output.style.bottom);
+						localStorage.setItem('left', output.style.left);
+						localStorage.setItem('right', output.style.right);
+					}
+			})
+		}
 
 		function onKill() {
 			if (running) running.Kill();
@@ -154,8 +156,6 @@ var onRunHandlers = [];
 var onCloseHandlers = [];
 var onKillHandlers = [];
 
-var outputs = document.querySelectorAll('.output');
-var plays = document.querySelectorAll('div.playground');
 
 function updatePlay(e) {
 	var play = localStorage.getItem("play");
@@ -185,24 +185,21 @@ function updatePlay(e) {
 
 	switch (e.key) {
 		case 'code':
+			var plays = document.querySelectorAll('div.playground');
 			plays[i].innerHTML = localStorage.getItem('code');
 			break;
 		case 'width':
-			outputs[i].style.width = localStorage.getItem('width');
-			break;
 		case 'height':
-			outputs[i].style.height = localStorage.getItem('height');
-			break;
 		case 'top':
-			outputs[i].style.top = localStorage.getItem('top');
-			break;
 		case 'bottom':
-			outputs[i].style.bottom = localStorage.getItem('bottom');
-			break;
 		case 'left':
-			outputs[i].style.left = localStorage.getItem('left');
-			break;
 		case 'right':
+			var outputs = document.querySelectorAll('.output');
+			outputs[i].style.width = localStorage.getItem('width');
+			outputs[i].style.height = localStorage.getItem('height');
+			outputs[i].style.top = localStorage.getItem('top');
+			outputs[i].style.bottom = localStorage.getItem('bottom');
+			outputs[i].style.left = localStorage.getItem('left');
 			outputs[i].style.right = localStorage.getItem('right');
 			break;
 	}
