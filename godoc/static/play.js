@@ -75,12 +75,16 @@ function initPlayground(transport) {
 		function updateRunStorage(index, e) {
 			localStorage.setItem('index', index);
 
+			// Syncs repeated clicking of the same run2 button
+			// by resetting play storage
 			if (localStorage.getItem('play') === 'run') {
 				localStorage.removeItem('play');
 			} else {
 				localStorage.setItem('play', 'run');
 			}
 
+			// Always reset this key in local storage to sync repeated
+			// clicking or clicking shiftKey on other playground runs
 			if (e.shiftKey) {
 				localStorage.setItem('shiftKey', e.shiftKey);
 			} else if (localStorage.getItem('shiftKey') === 'true') {
@@ -148,6 +152,8 @@ function initPlayground(transport) {
 
 	var play = document.querySelectorAll('div.playground');
 	for (var i = 0; i < play.length; i++) {
+		// Index is passed as argument to sync play actions
+		// when presenter notes are enabled
 		init(play[i], i);
 	}
 }
@@ -156,17 +162,16 @@ var onRunHandlers = [];
 var onCloseHandlers = [];
 var onKillHandlers = [];
 
-
 function updatePlay(e) {
 	var play = localStorage.getItem("play");
 	var i = localStorage.getItem("index");
 
 	var runCalled = (play === 'run' && e.key === 'play');
-	var anotherRunCalled = (e.key === 'index' && e.oldValue);
+	var differentRunCalled = (e.key === 'index' && e.oldValue);
 
 	switch (play) {
 		case 'run':
-		if (runCalled || anotherRunCalled) {
+		if (runCalled || differentRunCalled) {
 			onRunHandlers[i](e);
 			break;
 		}
@@ -187,7 +192,7 @@ function updatePlay(e) {
 		case 'code':
 			var plays = document.querySelectorAll('div.playground');
 			plays[i].innerHTML = localStorage.getItem('code');
-			break;
+			return;
 		case 'width':
 		case 'height':
 		case 'top':
@@ -201,6 +206,6 @@ function updatePlay(e) {
 			outputs[i].style.bottom = localStorage.getItem('bottom');
 			outputs[i].style.left = localStorage.getItem('left');
 			outputs[i].style.right = localStorage.getItem('right');
-			break;
+			return;
 	}
 }
