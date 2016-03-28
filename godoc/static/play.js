@@ -153,46 +153,39 @@ function initPlayground(transport) {
 	var play = document.querySelectorAll('div.playground');
 	for (var i = 0; i < play.length; i++) {
 		// Index is passed as argument to sync play actions
-		// when presenter notes are enabled
+		// when presenter notes are enabled, to identify
+		// the playground to be synced
 		init(play[i], i);
 	}
 }
 
+// Stores playground click handlers to sync click events
+// when presenter notes are enabled
 var onRunHandlers = [];
 var onCloseHandlers = [];
 var onKillHandlers = [];
 
 function updatePlay(e) {
-	var play = localStorage.getItem("play");
 	var i = localStorage.getItem("index");
 
-	var runCalled = (play === 'run' && e.key === 'play');
-	var differentRunCalled = (e.key === 'index' && e.oldValue);
-
-	switch (play) {
-		case 'run':
-		if (runCalled || differentRunCalled) {
-			onRunHandlers[i](e);
-			break;
-		}
-		case 'close':
-		if (play === 'close') {
-			onCloseHandlers[i](e);
-			break;
-		}
-		case 'kill':
-		if (play === 'kill') {
-			onKillHandlers[i](e);
-			break;
-		}
-		return;
-	}
-
 	switch (e.key) {
+		// Syncs run, close, kill actions
+		case 'play':
+			var play = localStorage.getItem("play");
+			if (play === 'run') {
+				onRunHandlers[i](e);
+			} else if (play === 'close') {
+				onCloseHandlers[i](e);
+			} else if (play === 'kill') {
+				onKillHandlers[i](e);
+			}
+			return;
+		// Syncs code editing
 		case 'code':
 			var plays = document.querySelectorAll('div.playground');
 			plays[i].innerHTML = localStorage.getItem('code');
 			return;
+		// Syncs resizing of playground output
 		case 'width':
 		case 'height':
 		case 'top':

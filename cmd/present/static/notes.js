@@ -68,7 +68,7 @@ function addPresenterNotesStyle() {
   el.href = PERMANENT_URL_PREFIX + 'notes.css';
   w.document.body.appendChild(el);
   w.document.querySelector('head').appendChild(el);
-}
+};
 
 function formatNotes(notes) {
   var formattedNotes = '';
