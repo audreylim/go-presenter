@@ -2105,8 +2105,9 @@ function initPlayground(transport) {
 				localStorage.setItem('play', 'run');
 			}
 
-			// Always reset this key in local storage to sync repeated
-			// clicking or clicking shiftKey on other playground runs
+			// Always reset this key in local storage to sync repeat
+			// clicking of shiftKey or clicking shiftKey on other
+			// playground runs
 			if (e.shiftKey) {
 				localStorage.setItem('shiftKey', e.shiftKey);
 			} else if (localStorage.getItem('shiftKey') === 'true') {
@@ -2191,6 +2192,9 @@ function updatePlay(e) {
 	var i = localStorage.getItem("index");
 
 	switch (e.key) {
+		case 'index':
+			return;
+		// Syncs run, close, kill actions
 		case 'play':
 			var play = localStorage.getItem("play");
 			if (play === 'run') {
@@ -2201,10 +2205,12 @@ function updatePlay(e) {
 				onKillHandlers[i](e);
 			}
 			return;
+		// Syncs code editing
 		case 'code':
-var plays = document.querySelectorAll('div.playground');
+			var plays = document.querySelectorAll('div.playground');
 			plays[i].innerHTML = localStorage.getItem('code');
 			return;
+		// Syncs resizing of playground output
 		case 'width':
 		case 'height':
 		case 'top':
