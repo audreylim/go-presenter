@@ -24,7 +24,7 @@ function handleKeyDownN(event) {
       return;
     }
 
-    w = window.open('', '', 'width=1000,height=656,scrollbars=no,resizable=1');
+    w = window.open('', '', 'width=1000,height=656');
     initialize();
   }
 };
@@ -51,7 +51,10 @@ function initialize() {
   slides.height = '750px';
   slides.src = slidesUrl;
   w.document.body.appendChild(slides);
-  slides.focus();
+  // setTimeout needed for Firefox
+  setTimeout(function() {
+    slides.focus();
+  }, 100);
 
   var notes = w.document.createElement('div');
   notes.id = 'presenter-notes';
@@ -82,11 +85,10 @@ function formatNotes(notes) {
 
 function updateNotes() {
   destSlide = parseInt(localStorage.getItem("destSlide"));
-  if (destSlide < 1) return;
   s = sections[destSlide - 1];
   var el = w.document.getElementById('presenter-notes');
 
-  if (s.Notes) {
+  if (s && s.Notes) {
     if (el) {
       var notes = formatNotes(s.Notes);
       el.innerHTML = notes;

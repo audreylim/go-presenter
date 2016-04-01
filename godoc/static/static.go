@@ -2131,15 +2131,16 @@ function initPlayground(transport) {
 			onKillHandlers.push(onKill);
 
 			code.addEventListener("input", inputHandler, false);
-			function inputHandler(e) {
-				localStorage.setItem("code", e.target.innerHTML);
-				localStorage.setItem("index", index);
-			}
+		}
+
+		function inputHandler(e) {
+			localStorage.setItem("code", e.target.innerHTML);
+			localStorage.setItem("index", index);
 		}
 
 		var run1 = document.createElement('button');
 		run1.innerHTML = 'Run';
-		run1.classList.add('run', index);
+		run1.className = 'run';
 		run1.addEventListener("click", onRun, false);
 		var run2 = document.createElement('button');
 		run2.className = 'run';
