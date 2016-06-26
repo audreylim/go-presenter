@@ -1,3 +1,7 @@
+**Update**: Presenter notes support has been fully [merged](https://github.com/golang/go/issues/14654) and enabled and the Go present tool.
+
+Just run `present -notes` to start using it.
+
 # Presenter
 
 Presenter builds on top of the [go present tool](https://github.com/golang/tools) to support presenter notes on a second screen.
