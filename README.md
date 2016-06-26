@@ -1,4 +1,4 @@
-**Update**: Presenter notes support has been fully [merged](https://github.com/golang/go/issues/14654) and enabled and the Go present tool.
+**Update**: Presenter notes support has been fully [merged](https://github.com/golang/go/issues/14654) and enabled on the Go present tool.
 
 Just run `present -notes` to start using it.
 
